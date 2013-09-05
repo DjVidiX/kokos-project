@@ -15,7 +15,7 @@ def getKey():
     return key
 
 def getValue(singleNode):
-    return re.split('[<>]', singleNode.toxml())[2]
+    return singleNode.childNodes[0].toxml()
 
 def openURL(url):
     return urllib.urlopen(url)
