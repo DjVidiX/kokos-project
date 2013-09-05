@@ -54,12 +54,35 @@ def main():
     addKey('549a1a7b78dc51ddf8b8c8d585b6ed4b')
 
     #pobieram skompresowany xml i wypakowuje - dziala
-    tempFile = urllib.urlretrieve('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=110')
+    tempFile = urllib.urlretrieve('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=100')
     tempGzip = gzip.open(tempFile[0], 'rb')
 
     #parsowanie - dla status=500 nie dziala
     dom = minidom.parseString(tempGzip.read())
-    print dom.toprettyxml()
+    
+    #zapis obiektu dom do xml o nazwie 'dom.xml'
+    #file_handle = open('dom.xml','wb')
+    #dom.writexml(file_handle)
+    #file_handle.close()
+    
+    #wydobycie listy aukcji
+    auctionsList = dom.childNodes[0].childNodes[0].childNodes
+    
+    #operacje na poszczegolnych aukcjach, wypisywanie komunikatu
+    #jest problem z komunikatami(opisami) - niektore zawieraja znak nowej linii, co kompletnie psuje zapisany plik, trzeba je pomijac
+    for auction in auctionsList:
+      dataList = auction.childNodes
+      message = ''
+      for element in dataList:
+        message = message + element.toxml().encode('UTF-8') + ';'
+      print message
+
+    #for auctions in auctionsList:
+    #  auctionList = auctions.childNodes
+    #  for auction in auctionList:
+    #    fp = open(getValue(auction.getElementsByTagName('id')[0]) + '.xml', 'wb')
+    #    auction.writexml(fp)
+    #    fp.close()        
 
 
     #idList = dict()
