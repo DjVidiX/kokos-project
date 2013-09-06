@@ -2,7 +2,8 @@ import re
 import urllib
 import gzip
 import Queue
-import xml.etree.ElementTree as ET
+from xml.sax import parseString
+from xml.sax.handler import ContentHandler
 from xml.dom import minidom
 
 records = set(['id', 'value', 'period', 'percent', 'insuranceNumber', 'isVindicated', 'monthlyInstallment', 'type', 'startDate', 'age', 'province', 'condition', 'income', 'expenses', 'credits', 'homeAddressVerificationDescription', 'employerVerificatonDescription', 'identityCardVerificationDescription', 'identityVerificationDescription', 'overdueDays', 'beforeDays', 'maxVerifyMonthlyInstallment', 'positiveRecomendations', 'negativeRecomendations', 'allegroPositiveComments', 'allegroNegativeComments', 'verify'])
@@ -56,11 +57,13 @@ def main():
     addKey('549a1a7b78dc51ddf8b8c8d585b6ed4b')
 
     #pobieram skompresowany xml i wypakowuje - dziala
-    tempFile = urllib.urlretrieve('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=100')
+    tempFile = urllib.urlretrieve('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=500')
     tempGzip = gzip.open(tempFile[0], 'rb')
 
+    handler = ContentHandler()
+    xmlsax = parseString(tempGzip.read, handler)
     #parsowanie - dla status=500 nie dziala
-    dom = minidom.parseString(tempGzip.read())
+    #dom = minidom.parseString(tempGzip.read())
     #print dom.toprettyxml().encode('UTF-8')
 
     #zapis obiektu dom do xml o nazwie 'dom.xml'
@@ -79,12 +82,14 @@ def main():
         for element in dataList:
             if element.childNodes.length == 1:
                 if str(element.nodeName) in records:
-                    message = message + element.childNodes[0].toxml().encode('UTF-8') + ';'
+                    message = message + element.childNodes[0].toxml().encode('UTF-8') + '*'
             else:
                 for personalInfo in element.childNodes:
-                    if personalInfo.hasChildNodes():
-                        if str(personalInfo.nodeName) in records:
-                            message = message + personalInfo.childNodes[0].toxml().encode('UTF-8') + ';'
+                    if str(personalInfo.nodeName) in records:
+                        data = ''
+                        if personalInfo.hasChildNodes():
+                            data = personalInfo.childNodes[0].toxml().encode('UTF-8')
+                        message = message + data + '*'
         print message
 
 
