@@ -57,13 +57,13 @@ def main():
     addKey('549a1a7b78dc51ddf8b8c8d585b6ed4b')
 
     #pobieram skompresowany xml i wypakowuje - dziala
-    tempFile = urllib.urlretrieve('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=500')
+    tempFile = urllib.urlretrieve('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=100')
     tempGzip = gzip.open(tempFile[0], 'rb')
 
-    handler = ContentHandler()
-    xmlsax = parseString(tempGzip.read, handler)
+    #handler = ContentHandler()
+    #xmlsax = parseString(tempGzip.read, handler)
     #parsowanie - dla status=500 nie dziala
-    #dom = minidom.parseString(tempGzip.read())
+    dom = minidom.parseString(tempGzip.read())
     #print dom.toprettyxml().encode('UTF-8')
 
     #zapis obiektu dom do xml o nazwie 'dom.xml'
@@ -76,6 +76,7 @@ def main():
 
     #operacje na poszczegolnych aukcjach, wypisywanie komunikatu
     #jest problem z komunikatami(opisami) - niektore zawieraja znak nowej linii, co kompletnie psuje zapisany plik, trzeba je pomijac
+    my_own_file = open('dane.txt', 'wb')
     for auction in auctionsList:
         dataList = auction.childNodes
         message = ''
@@ -90,7 +91,9 @@ def main():
                         if personalInfo.hasChildNodes():
                             data = personalInfo.childNodes[0].toxml().encode('UTF-8')
                         message = message + data + '*'
-        print message
+
+        string_to_save = message.replace('<![CDATA[', '').replace(']]', '').replace('>', '')
+        my_own_file.write(string_to_save)
 
 
     #for auctions in auctionsList:
