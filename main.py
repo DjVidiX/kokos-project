@@ -2,8 +2,10 @@ import re
 import urllib
 import gzip
 import Queue
+import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
+records = set(['id', 'value', 'period', 'percent', 'insuranceNumber', 'isVindicated', 'monthlyInstallment', 'type', 'startDate', 'age', 'province', 'condition', 'income', 'expenses', 'credits', 'homeAddressVerificationDescription', 'employerVerificatonDescription', 'identityCardVerificationDescription', 'identityVerificationDescription', 'overdueDays', 'beforeDays', 'maxVerifyMonthlyInstallment', 'positiveRecomendations', 'negativeRecomendations', 'allegroPositiveComments', 'allegroNegativeComments', 'verify'])
 keys = Queue.Queue()
 
 def addKey(newKey):
@@ -59,30 +61,39 @@ def main():
 
     #parsowanie - dla status=500 nie dziala
     dom = minidom.parseString(tempGzip.read())
-    
+    #print dom.toprettyxml().encode('UTF-8')
+
     #zapis obiektu dom do xml o nazwie 'dom.xml'
     #file_handle = open('dom.xml','wb')
     #dom.writexml(file_handle)
     #file_handle.close()
-    
+
     #wydobycie listy aukcji
     auctionsList = dom.childNodes[0].childNodes[0].childNodes
-    
+
     #operacje na poszczegolnych aukcjach, wypisywanie komunikatu
     #jest problem z komunikatami(opisami) - niektore zawieraja znak nowej linii, co kompletnie psuje zapisany plik, trzeba je pomijac
     for auction in auctionsList:
-      dataList = auction.childNodes
-      message = ''
-      for element in dataList:
-        message = message + element.toxml().encode('UTF-8') + ';'
-      print message
+        dataList = auction.childNodes
+        message = ''
+        for element in dataList:
+            if element.childNodes.length == 1:
+                if str(element.nodeName) in records:
+                    message = message + element.childNodes[0].toxml().encode('UTF-8') + ';'
+            else:
+                for personalInfo in element.childNodes:
+                    if personalInfo.hasChildNodes():
+                        if str(personalInfo.nodeName) in records:
+                            message = message + personalInfo.childNodes[0].toxml().encode('UTF-8') + ';'
+        print message
+
 
     #for auctions in auctionsList:
     #  auctionList = auctions.childNodes
     #  for auction in auctionList:
     #    fp = open(getValue(auction.getElementsByTagName('id')[0]) + '.xml', 'wb')
     #    auction.writexml(fp)
-    #    fp.close()        
+    #    fp.close()
 
 
     #idList = dict()
