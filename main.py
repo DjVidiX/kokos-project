@@ -6,7 +6,7 @@ from xml.sax import parseString
 from xml.sax.handler import ContentHandler
 from xml.dom import minidom
 
-records = set(['id', 'value', 'period', 'percent', 'insuranceNumber', 'isVindicated', 'monthlyInstallment', 'type', 'startDate', 'age', 'province', 'condition', 'income', 'expenses', 'credits', 'homeAddressVerificationDescription', 'employerVerificatonDescription', 'identityCardVerificationDescription', 'identityVerificationDescription', 'overdueDays', 'beforeDays', 'maxVerifyMonthlyInstallment', 'positiveRecomendations', 'negativeRecomendations', 'allegroPositiveComments', 'allegroNegativeComments', 'verify'])
+records = list(['id', 'value', 'period', 'percent', 'insuranceNumber', 'isVindicated', 'monthlyInstallment', 'type', 'startDate', 'age', 'province', 'condition', 'income', 'expenses', 'credits', 'homeAddressVerificationDescription', 'employerVerificatonDescription', 'identityCardVerificationDescription', 'identityVerificationDescription', 'overdueDays', 'beforeDays', 'maxVerifyMonthlyInstallment', 'positiveRecomendations', 'negativeRecomendations', 'allegroPositiveComments', 'allegroNegativeComments', 'verify'])
 keys = Queue.Queue()
 
 def addKey(newKey):
@@ -77,6 +77,13 @@ def main():
     #operacje na poszczegolnych aukcjach, wypisywanie komunikatu
     #jest problem z komunikatami(opisami) - niektore zawieraja znak nowej linii, co kompletnie psuje zapisany plik, trzeba je pomijac
     my_own_file = open('dane.txt', 'wb')
+
+    columnNames = ''
+    for name in records:
+        columnNames = columnNames + name + '*'
+
+    columnNames = columnNames + '\n'
+    my_own_file.write(columnNames)
     for auction in auctionsList:
         dataList = auction.childNodes
         message = ''
@@ -92,7 +99,7 @@ def main():
                             data = personalInfo.childNodes[0].toxml().encode('UTF-8')
                         message = message + data + '*'
 
-        string_to_save = message.replace('<![CDATA[', '').replace(']]', '').replace('>', '')
+        string_to_save = message.replace('<![CDATA[', '').replace(']]', '').replace('>', '') + '\n'
         my_own_file.write(string_to_save)
 
 
