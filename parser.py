@@ -1,136 +1,79 @@
 import re
-import urllib
-import gzip
-import Queue
-from parser import JAMParser
-from xml.sax import parseString
-from xml.sax.handler import ContentHandler
-from xml.dom import minidom
 
-records = set(['id', 'value', 'period', 'percent', 'insuranceNumber', 'isVindicated', 'monthlyInstallment', 'type', 'startDate', 'age', 'province', 'condition', 'income', 'expenses', 'credits', 'homeAddressVerificationDescription', 'employerVerificatonDescription', 'identityCardVerificationDescription', 'identityVerificationDescription', 'overdueDays', 'beforeDays', 'maxVerifyMonthlyInstallment', 'positiveRecomendations', 'negativeRecomendations', 'allegroPositiveComments', 'allegroNegativeComments', 'verify'])
-keys = Queue.Queue()
-
-def addKey(newKey):
-    keys.put(newKey)
-
-def getKey():
-    key = keys.get()
-    keys.put(key)
-    return key
-
-def getValue(singleNode):
-    return singleNode.childNodes[0].toxml()
-
-def openURL(url):
-    return urllib.urlopen(url)
-
-def getAuctionData(id):
-    return minidom.parse(openURL('https://kokos.pl/webapi/get-auction-data?key=' + getKey() + '&id=' + id))
-
-#do poprawy
-#def getAuctionsByStatus(status):
-#    return minidom.parseString(gzip.open(openURL('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=' + status), 'rb').read())
-
-def search():
-    pass
-
-def getMostPopularAuctions(records):
-    return minidom.parse(openURL('https://kokos.pl/webapi/get-most-popular-auctions?key=' + getKey() + '&records=' + str(records)))
-
-def getInvestmentData(ile):
-    my_url = "https://kokos.pl/webapi/get-recent-investments?key="+coconutkeys[1]+"&records="+str(ile)
-    return minidom.parse(openURL(my_url))
-
-def getRecentPayments(ile):
-    my_url = "https://kokos.pl/webapi/get-recent-auctions?key="+coconutkeys[1]+"&records="+str(ile)
-    return minidom.parse(openURL(my_url))
-
-def getDataFromAuctionList(idList):
-    for id in idList:
-        pass
+class JAMParser():
+	def __init__(self):
+		self.lol = []
 
 
-def main():
+	"""def feed(self, string):
+		string = string.replace('&lt;![CDATA[','').replace(']]&gt;', '')
+		self.datas = string.split("</auction>")"""
 
-    #dodaje klucze do kolejki
-    addKey('d9cb47b739ee220bc290938262ec602b')
-    addKey('9087549eb217b2d43136066a14aa81d4')
-    addKey('549a1a7b78dc51ddf8b8c8d585b6ed4b')
+	def getData(self, type_data, dana):
+		"""if(type_data=='province'):
+			try: 
+				wartosc = re.search("<" + type_data + ">(.{0,50})</" + type_data + ">", dana).group(1)
+				return wartosc
+			except AttributeError:
+				return 'Sierota nie podala wojewodztwa' """
+		try:
+			wartosc = re.search("<" + type_data + ">(.{0,50})</" + type_data + ">", dana).group(1)
+			return wartosc
+		except AttributeError:
+			try:
+				re.search("<" + type_data + "/>", dana).group()
+				return 'Brak danych'
+			except AttributeError:
+				return None
 
-    #pobieram skompresowany xml i wypakowuje - dziala
-    tempFile = urllib.urlretrieve('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=1300')
-    
-    tempGzip = gzip.open(tempFile[0], 'rb')
+	def reminderDla1300(self, dana):
+		try:
+			dane = re.search("<reminders>(.*)</reminders>", dana).group(1)
+			try:
+				if(re.search("<reminderType>REMINDER6</reminderType>", dane)):
+					return 'REMINDER6'
+				elif(re.search("<reminderType>REMINDER5</reminderType>", dane)):
+					return 'REMINDER5'
+				elif(re.search("<reminderType>REMINDER4</reminderType>", dane)):
+					return 'REMINDER4'
+				elif(re.search("<reminderType>REMINDER3</reminderType>", dane)):
+					return 'REMINDER3'
+				elif(re.search("<reminderType>REMINDER2</reminderType>", dane)):
+					return 'REMINDER2'
+				elif(re.search("<reminderType>REMINDER1</reminderType>", dane)):
+					return 'REMINDER1'
+				else:
+					return 'Brak remindera'
+				"""
+				print lista_remindow
+				if(lista_remindow.__contains__('')):
+					return 'REMINDER6'
+				elif(lista_remindow.__contains__('REMINDER5')):
+					return 'REMINDER5'
+				elif(lista_remindow.__contains__('REMINDER4')):
+					return 'REMINDER4'
+				elif(lista_remindow.__contains__('REMINDER3')):
+					return 'REMINDER3'
+				elif(lista_remindow.__contains__('REMINDER2')):
+					return 'REMINDER2'
+				elif(lista_remindow.__contains__('REMINDER1')):
+					return 'REMINDER1'
+				else:
+					return 'Brak remindera'"""
+			except AttributeError:
+				return None
+		except AttributeError:
+			return None
 
-    Parser = JAMParser()
-    
-    Parser.feed(tempGzip.read())
-    id_list = Parser.getData()
-    
-    print id_list[32600:]
-    #print len(id_list) 
-    
-    """for lista in id_list:
-        for dana in lista:
-            if(re.search("<verify>.*</verify>", dana)):
-                print 'YeaH ! ' """
-    
-    
-    #handler = ContentHandler()
-    #xmlsax = parseString(tempGzip.read, handler)
-    #parsowanie - dla status=500 nie dziala
-    #dom = minidom.parseString(tempGzip.read())
-    #print dom.toprettyxml().encode('UTF-8')
-
-    #zapis obiektu dom do xml o nazwie 'dom.xml'
-    #file_handle = open('dom.xml','wb')
-    #dom.writexml(file_handle)
-    #file_handle.close()
-
-    #wydobycie listy aukcji
-    """auctionsList = dom.childNodes[0].childNodes[0].childNodes
-
-    #operacje na poszczegolnych aukcjach, wypisywanie komunikatu
-    #jest problem z komunikatami(opisami) - niektore zawieraja znak nowej linii, co kompletnie psuje zapisany plik, trzeba je pomijac
-    my_own_file = open('dane.txt', 'wb')
-    for auction in auctionsList:
-        dataList = auction.childNodes
-        message = ''
-        for element in dataList:
-            if element.childNodes.length == 1:
-                if str(element.nodeName) in records:
-                    message = message + element.childNodes[0].toxml().encode('UTF-8') + '*'
-            else:
-                for personalInfo in element.childNodes:
-                    if str(personalInfo.nodeName) in records:
-                        data = ''
-                        if personalInfo.hasChildNodes():
-                            data = personalInfo.childNodes[0].toxml().encode('UTF-8')
-                        message = message + data + '*'
-
-        string_to_save = message.replace('<![CDATA[', '').replace(']]', '').replace('>', '')
-        my_own_file.write(string_to_save)
-    """
-
-    #for auctions in auctionsList:
-    #  auctionList = auctions.childNodes
-    #  for auction in auctionList:
-    #    fp = open(getValue(auction.getElementsByTagName('id')[0]) + '.xml', 'wb')
-    #    auction.writexml(fp)
-    #    fp.close()
-
-
-    #idList = dict()
-    #recentAuctions = getAuctionsByStatus('500')
-    #auctions = recentAuctions.getElementsByTagName('auction')
-    #for auction in auctions:
-    #    tempId = getValue(auction.getElementsByTagName('id')[0])
-    #    idList[tempId] = getAuctionData(tempId)
-    #for auction in idList.keys():
-    #    print idList[auction].toprettyxml()
-
-
-
-
-if __name__ == '__main__':
-    main()
+	def reminderDla500(self, dana):
+		try:
+			dane = re.search("<reminders>(.*)</reminders>", dana).group(1)
+			try:
+				if(re.search("<reminderType>REMINDER6</reminderType>", dane)):
+					return 'REMINDER6'
+				else:
+					return 'REMINDER5'
+			except AttributeError:
+				return None
+		except AttributeError:
+			return None
