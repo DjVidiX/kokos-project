@@ -7,7 +7,7 @@ from xml.sax import parseString
 from xml.sax.handler import ContentHandler
 from xml.dom import minidom
 
-records = ['id', 'value', 'period', 'percent', 'insuranceNumber', 'isVindicated', 'monthlyInstallment', 'type', 'startDate', 'age', 'province', 'condition', 'income', 'expenses', 'credits', 'homeAddressVerificationDescription', 'employerVerificationDescription', 'identityCardVerificationDescription', 'identityVerificationDescription', 'overdueDays', 'beforeDays', 'maxVerifyMonthlyInstallment', 'positiveRecomendations', 'negativeRecomendations']
+records = ['id', 'userId','value', 'period', 'percent', 'insuranceNumber', 'isVindicated', 'monthlyInstallment', 'type', 'startDate', 'age', 'province', 'condition', 'income', 'expenses', 'credits', 'homeAddressVerificationDescription', 'employerVerificationDescription', 'identityCardVerificationDescription', 'identityVerificationDescription', 'overdueDays', 'beforeDays', 'positiveRecomendations', 'negativeRecomendations']
 keys = Queue.Queue()
 
 def addKey(newKey):
@@ -80,17 +80,17 @@ def main():
     ms_str = tempGzip.read()
     ms_str = ms_str.split("</auction>")
     
-    #auctions = parse500()
+    #auctions = parse500(ms_str)
     auctions = parse1300(ms_str)
     
     plik = open('dane_1300.txt', 'wb')
     
-    maras = 'id*value*period*percent*insuranceNumber*isVindicated*monthlyInstallment*type*startDate*age*province*condition*income*expenses*credits*homeAddressVerificationDescription*employerVerificationDescription*identityCardVerificationDescription*identityVerificationDescription*overdueDays*beforeDays*maxVerifyMonthlyInstallment*positiveRecomendations*negativeRecomendations*verify*reminder*\n'
+    maras = 'id*userId*value*period*percent*insuranceNumber*isVindicated*monthlyInstallment*type*startDate*age*province*condition*income*expenses*credits*homeAddressVerificationDescription*employerVerificationDescription*identityCardVerificationDescription*identityVerificationDescription*overdueDays*beforeDays*maxVerifyMonthlyInstallment*positiveRecomendations*negativeRecomendations*verify*reminder*\n'
     
     for aukcja in auctions:
         for string in aukcja:
-            maras = maras  + string + '*'
-        maras = maras + '\n'
+            plik.write(string + '*')
+        plik.write('\n')
     
     plik.write(maras)
     plik.close()
