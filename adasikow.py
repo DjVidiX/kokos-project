@@ -1,10 +1,7 @@
-import ast
 import re
 import urllib
 import gzip
 import Queue
-from xml.sax import parseString
-from xml.sax.handler import ContentHandler
 from xml.dom import minidom
 
 records = list(['id', 'value', 'period', 'percent', 'insuranceNumber', 'isVindicated', 'monthlyInstallment', 'type', 'startDate', 'age', 'province', 'condition', 'income', 'expenses', 'credits', 'homeAddressVerificationDescription', 'employerVerificationDescription', 'identityCardVerificationDescription', 'identityVerificationDescription', 'overdueDays', 'beforeDays', 'maxVerifyMonthlyInstallment', 'positiveRecomendations', 'negativeRecomendations', 'verify'])
@@ -27,12 +24,25 @@ def openURL(url):
 def getAuctionData(id):
     return minidom.parse(openURL('https://kokos.pl/webapi/get-auction-data?key=' + getKey() + '&id=' + str(id)))
 
-#do poprawy
-#def getAuctionsByStatus(status):
-#    return minidom.parseString(gzip.open(openURL('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=' + status), 'rb').read())
-
-def search():
-    pass
+def search(
+    status = None,
+    userId = None,
+    valueFrom = None,
+    valueTo = None,
+    periodFrom = None,
+    periodTo = None,
+    percentFrom = None,
+    percentTo = None
+    ):
+    return minidom.parse(openURL('https://kokos.pl/webapi/search?' +
+    (userId and 'user_id=' + str(userId) + '&'  or '' ) +
+    (valueFrom and 'valueFrom=' + str(valueFrom) + '&'  or '' ) +
+    (valueTo and 'valueTo=' + str(valueTo) + '&'  or '' ) +
+    (periodFrom and 'periodFrom=' + str(periodFrom) + '&'  or '' ) +
+    (periodTo and 'periodTo=' + str(periodTo) + '&'  or '' ) +
+    (percentFrom and 'percentFrom=' + str(percentFrom) + '&'  or '' ) +
+    (percentTo and 'percentTo=' + str(percentTo) + '&'  or '' ) +
+    (status and 'status=' + str(status) + '&' or '' ) + 'key=' + getKey()))
 
 def getMostPopularAuctions(records):
     return minidom.parse(openURL('https://kokos.pl/webapi/get-most-popular-auctions?key=' + getKey() + '&records=' + str(records)))
@@ -45,11 +55,6 @@ def getRecentPayments(ile):
     my_url = "https://kokos.pl/webapi/get-recent-auctions?key="+coconutkeys[1]+"&records="+str(ile)
     return minidom.parse(openURL(my_url))
 
-def getDataFromAuctionList(idList):
-    for id in idList:
-        pass
-
-
 def main():
 
     #dodaje klucze do kolejki
@@ -57,43 +62,19 @@ def main():
     addKey('9087549eb217b2d43136066a14aa81d4')
     addKey('549a1a7b78dc51ddf8b8c8d585b6ed4b')
 
-    #pobieram skompresowany xml i wypakowuje - dziala
-#    tempFile = urllib.urlretrieve('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=100')
-#    tempGzip = gzip.open(tempFile[0], 'rb')
+    dom = search(valueFrom = 1100, status = 100)
+    print dom.toprettyxml().encode('UTF-8')
 
-    #handler = ContentHandler()
-    #xmlsax = parseString(tempGzip.read, handler)
-    #parsowanie - dla status=500 nie dziala
-#    dom = minidom.parseString(tempGzip.read())
+    #Pobranie i wypakowanie pliku .xml
+    '''
+    tempFile = urllib.urlretrieve('https://kokos.pl/webapi/get-auctions-by-status?key=' + getKey() + '&status=110')
+    tempGzip = gzip.open(tempFile[0], 'rb')
+    dom = minidom.parseString(tempGzip.read())
     #print dom.toprettyxml().encode('UTF-8')
+    '''
 
-    #zapis obiektu dom do xml o nazwie 'dom.xml'
-    #file_handle = open('dom.xml','wb')
-    #dom.writexml(file_handle)
-    #file_handle.close()
-
-    #wydobycie listy aukcji
-#    auctionsList = dom.childNodes[0].childNodes[0].childNodes
-
-    #operacje na poszczegolnych aukcjach, wypisywanie komunikatu
-    #jest problem z komunikatami(opisami) - niektore zawieraja znak nowej linii, co kompletnie psuje zapisany plik, trzeba je pomijac
-
-    idList = open('id.txt', 'r')
-    idList = ast.literal_eval(idList.read())
-    idList = [n.strip() for n in idList]
-    #print type(idList)
-    #print idList
-
-    my_own_file = open('dane.txt', 'wb')
-
-    columnNames = ''
-    for name in records:
-        columnNames = columnNames + name + '*'
-
-    n = len(idList)
-
-    columnNames = columnNames + '\n'
-    my_own_file.write(columnNames)
+    #Operacje na poszczegolnych aukcjach, wypisywanie komunikatu
+    '''
     for i in range(30711,30712 - 3300, -1):
         print i
         dataList = getAuctionData(idList[i]).childNodes[0].childNodes[0].childNodes
@@ -109,30 +90,8 @@ def main():
                         if personalInfo.hasChildNodes():
                             data = personalInfo.childNodes[0].toxml().encode('UTF-8')
                         message = message +  data + '*'
-
-        string_to_save = message.replace('<![CDATA[', '').replace(']]', '').replace('>', '') + '\n'
-        my_own_file.write(string_to_save)
-
-
-    #for auctions in auctionsList:
-    #  auctionList = auctions.childNodes
-    #  for auction in auctionList:
-    #    fp = open(getValue(auction.getElementsByTagName('id')[0]) + '.xml', 'wb')
-    #    auction.writexml(fp)
-    #    fp.close()
-
-
-    #idList = dict()
-    #recentAuctions = getAuctionsByStatus('500')
-    #auctions = recentAuctions.getElementsByTagName('auction')
-    #for auction in auctions:
-    #    tempId = getValue(auction.getElementsByTagName('id')[0])
-    #    idList[tempId] = getAuctionData(tempId)
-    #for auction in idList.keys():
-    #    print idList[auction].toprettyxml()
-
-
-
+            message = message.replace('<![CDATA[', '').replace(']]', '').replace('>', '') + '\n'
+        '''
 
 if __name__ == '__main__':
     main()
