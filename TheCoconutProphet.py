@@ -10,7 +10,8 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-from PyQt4 import QtGui
+from random import randint
+#from PyQt4 import QtGui
 
 #QtCore.QObject.connect(a, QtCore.SIGNAL("QtSig()"), pyFunction) - przyklad wiazania przycisku z funkcja
 
@@ -35,9 +36,12 @@ def GetData():
     pass
 
 def AddRisk(my_list):
+    for i in my_list:
+        my_risk = randint(0, 100)
+        i.append(my_risk*0.01)
     # dostaje list?, liczy dla kazdej aukcji jej ryzyko i dodaje jako ostatni parametr
     # tutaj algorytm od matematykow wyliczajacy ryzyko
-    return risklist
+    return my_list
 
 def SortBy(worklist, parametr):
     # sortowanie obiektow typu Auction po parametrze podanym jako string
@@ -62,6 +66,12 @@ def Search():
     CommitData(newlist)
 
 # search podpiac pod klawisz
+
+list = [[5, 6, 7], [8, 9, 11], [6, 7, 8], [5, 4, 3]]
+
+print AddRisk(list)
+
+
 
 
 
