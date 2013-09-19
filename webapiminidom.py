@@ -2,7 +2,7 @@
 import gzip
 import urllib
 import Queue
-from parser import JAMParser
+from jamparser import JAMParser
 from xml.dom import minidom
 
 class WebAPI:
