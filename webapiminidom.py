@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 import gzip
 import urllib
 import Queue
@@ -55,7 +57,7 @@ class WebAPI:
 	
 	def getCurrentAuctions(self, *records, **inputValues):
 		auctions = []
-		currentAuctions = self.getCurrentAuctionsByRisk(riskParameters)
+		currentAuctions = self.getCurrentAuctionsByRisk()
 		for auction in currentAuctions:
 			if (float(inputValues['value']) * float(auction['percent']) >= float(inputValues['income'])) and 
 			(auction['risk'] <= inputValues['risk']) and (int(auction['period']) <= inputValues['duration']):
