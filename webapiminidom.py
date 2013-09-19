@@ -56,17 +56,21 @@ class WebAPI:
 		return auctions
 	
 	def getCurrentAuctions(self, *records, **inputValues):
-		auctions = []
-		currentAuctions = self.getCurrentAuctionsByRisk()
-		for auction in currentAuctions:
-			if (float(inputValues['value']) * float(auction['percent']) >= float(inputValues['income'])) and (auction['risk'] <= inputValues['risk']) and (int(auction['period']) <= inputValues['duration']):
-				 auctions.append(auction)
-		return [for auction in auctions self.convertDictionaryToList(auction, records.append('risk').append('url')]
+		#auctions = []
+		#currentAuctions = self.getCurrentAuctionsByRisk()
+		#for auction in currentAuctions:
+		#	if (float(inputValues['value']) * float(auction['percent']) >= float(inputValues['income'])) and (auction['risk'] <= inputValues['risk']) and (int(auction['period']) <= inputValues['duration']):
+		#		 auctions.append(auction)
+		auctions = self.getCurrentAuctionsByRisk()
+		return [self.convertDictionaryToList(auction, records) for auction in auctions]
 		
 	def convertDictionaryToList(self, dicAuction, records):
 		listAuction = []
 		for record in records:
-			tempList.append(dicAuction[record])
+			if record in dicAuction:
+				listAuction.append(dicAuction[record])
+		listAuction.append(dicAuction['risk'])
+		listAuction.append(dicAuction['url'])
 		return listAuction
 	
 	def search(self,
