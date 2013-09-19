@@ -59,8 +59,7 @@ class WebAPI:
 		auctions = []
 		currentAuctions = self.getCurrentAuctionsByRisk()
 		for auction in currentAuctions:
-			if (float(inputValues['value']) * float(auction['percent']) >= float(inputValues['income'])) and 
-			(auction['risk'] <= inputValues['risk']) and (int(auction['period']) <= inputValues['duration']):
+			if (float(inputValues['value']) * float(auction['percent']) >= float(inputValues['income'])) and (auction['risk'] <= inputValues['risk']) and (int(auction['period']) <= inputValues['duration']):
 				 auctions.append(auction)
 		return [for auction in auctions self.convertDictionaryToList(auction, records.append('risk').append('url')]
 		
