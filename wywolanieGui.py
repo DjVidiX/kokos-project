@@ -12,6 +12,7 @@ class MyForm(QMainWindow):
         QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        #self.ui.styleSheet("QLabel {font-size : 400px; color : blue; background-image: url('tmp/test.jpg');}")
         self.MyWebAPI = WebAPI()
         self.klucz = self.keyCheck()
         if(self.klucz):
