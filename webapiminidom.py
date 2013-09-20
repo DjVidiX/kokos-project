@@ -67,52 +67,59 @@ class WebAPI:
 		tempFile = self.retrieveURL('https://kokos.pl/webapi/get-auctions-by-status?key=' + self.getKey() + '&status=' + str(status))
 		return minidom.parseString(gzip.open(tempFile, 'rb').read()).childNodes[0].childNodes[0].childNodes
 		
-	def getCurrentAuctionsByRisk(self):
-		riskParameters = {}
-		auctions = []
-		tempAuction = {}
+	def getCurrentAuctionsWithRisk(self):
+		requiredData = ['value', 'period', 'percent', 'createDate', 'insuranceNumber', 'monthlyInstallment', 'PB', 'financialVerifies']
+        PB = ['startDate', 'age', 'province', 'condition', 'income', 'expenses', 'credits', 'employerVerificationDescription',
+        'identityCardVerificationDescription', 'identityVerificationDescription', 'overdueDays', 'beforeDays', 'positiveRecomendations', 'negativeRecomendations']
+        auctions = []
+		tempAuction = { 'verify' : 0 }
 		currentAuctions = self.getAuctionsByStatus(100)
 		for auction in currentAuctions:
 			for element in auction.childNodes:
-				if str(element.nodeName) in riskParameters:
-					tempAuction[str(element.nodeName)] = self.getValue(element)
-			tempAuction['risk'] = 0 #TUTAJ POTRZEBNY JEST WZÓR NA WYZNACZENIE RYZYKA DLA DANEJ AUKCJI
+				if str(element.nodeName) in requiredData:
+                    if (len(element.childNodes) == 1):
+                        tempAuction[str(element.nodeName)] = self.getValue(element)
+                    elif (str(element.nodeName) == 'PB'):
+                        for personalData in element.childNodes:
+                            if str(personalData.nodeName) in PB:
+                                tempAuction[str(personalData.nodeName)] = self.getValue(personalData)
+                    elif (str(element.nodeName) == 'financialVerifies'):
+                        tempAuction['verify'] = len(element.childNodes)
+			tempAuction['risk'] = self.calcRisk(tempAuction)
 			tempAuction['url'] = ('https://kokos.pl/aukcje?id=' + self.getValue(auction.getElementsByTagName('id')[0]))
 			auctions.append(tempAuction)
 			tempAuction = {}
 		return auctions
-	
+
 	def getCurrentAuctions(self, *records, **inputValues):
-		#auctions = []
-		#currentAuctions = self.getCurrentAuctionsByRisk()
-		#for auction in currentAuctions:
-		#	if (float(inputValues['value']) * float(auction['percent']) >= float(inputValues['income'])) and (auction['risk'] <= inputValues['risk']) and (int(auction['period']) <= inputValues['duration']):
-		#		 auctions.append(auction)
-		auctions = self.getCurrentAuctionsByRisk()
+		auctions = []
+		currentAuctions = self.getCurrentAuctionsWithRisk()
+		for auction in currentAuctions:
+			if (float(inputValues['value']) * float(auction['percent']) >= float(inputValues['income'])) and (auction['risk'] <= inputValues['risk']) and (int(auction['period']) <= inputValues['duration']):
+				 auctions.append(auction)
 		return [self.convertDictionaryToList(auction, records) for auction in auctions]
-		
-	def CalcRisk(lista_danych):
-		lista_wspol = {
+
+	def calcRisk(auction):
+		riskParameters = {
 		'time_period': -0.0000407693375264417,
 		'value': 0.0000255781166535956,
-		'percent':'0.00809188866304392',
-		'insuranceNumber':'0.109439160613762',
-		'monthlyInstallment':'-0.0000927546299863634',
-		'age':'0.00128803387802354',
-		'province':'0.708329946304217',
-		'condition':'2.48032840681988',
-		'income':'',
-		'expenses':'',
-		'credits':'',
-		'identityVerificationDescription':'',
-		'employerVerificationDescription':'',
-		'identityCardVerificationDescription':'',
-		'beforeDays':'',
-		'overdueDays':'',
-		'positiveRecomendations':'',
-		'negativeRecomendations':'',
-		'verify':''}
-
+		'percent': 0.00809188866304392,
+		'insuranceNumber': 0.109439160613762,
+		'monthlyInstallment': -0.0000927546299863634,
+		'age': 0.00128803387802354,
+		'province': 0.708329946304217,
+		'condition': 2.48032840681988,
+		'income': 0.00000015135323567561,
+		'expenses': -0.0000173713825933087,
+		'credits': 0.00000279688857663816,
+		'identityVerificationDescription': 0.0270154328082372,
+		'employerVerificationDescription': -0.015519561345181,
+		'identityCardVerificationDescription': -0.0366844766580361,
+		'beforeDays': 0.000000232817562380368,
+		'overdueDays': 0.0000743172705154668,
+		'positiveRecomendations': -0.00128514408938851,
+		'negativeRecomendations': -0.00109661386646035,
+		'verify': -0.0360089281232056 }
 
 	def convertDictionaryToList(self, dicAuction, records):
 		listAuction = []
