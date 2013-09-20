@@ -3,6 +3,7 @@
 import gzip
 import urllib
 import Queue
+from datetime import date
 from jamparser import JAMParser
 from xml.dom import minidom
 
@@ -50,6 +51,12 @@ class WebAPI:
 				wartosc = '2'
 			else:
 				wartosc = '1'
+
+		elif singleNode.nodeName in ('CreateDate', 'StartDate'):
+			lista_daty = wartosc.split()
+			data = lista_daty[0].split('/')
+			data = [int(d) for d in data]
+			wartosc = date(data[2], data[1], data[0])
 
 		return wartosc
 
