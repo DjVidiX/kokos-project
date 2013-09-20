@@ -31,7 +31,27 @@ class WebAPI:
 		return urllib.urlretrieve(url)[0]
 	
 	def getValue(self, singleNode):
-		return str(singleNode.childNodes[0].toxml().encode('UTF-8')).replace('<![CDATA[', '').replace(']]', '').replace('>', '')
+		wartosc = str(singleNode.childNodes[0].toxml().encode('UTF-8')).replace('<![CDATA[', '').replace(']]', '').replace('>', '').replace('&oacute;', 'o')
+
+		if(singleNode.nodeName == 'province' or singleNode.nodeName == 'conditon'):
+			province_dict={'zachodniopomorskie':'1', 'wielkopolskie':'2', 'lubelskie':'3', 'małopolskie':'4', 'dolnośląskie':'5', 'śląskie':'6', 'Śląskie':'6', 'łodzkie':'7', 'Łodzkie':'7', 'kujawsko-pomorskie':'8', 'podlaskie':'9', 'mazowieckie':'10', 'warmińsko-mazurskie':'11', 'pomorskie':'12', 'lubuskie':'13', 'podkarpackie':'14', 'opolskie':'15', 'świętokrzyskie':'16', 'Świętokrzyskie':'16', 'żonaty':'1', 'kawaler':'2', 'osoba rozwiedziona':'3', 'panna':'4', 'mężatka':'5', 'wdowa':'6', 'wdowiec':'7'}
+			for key in province_dict.keys():
+				if(wartosc.lower()==key):
+					wartosc = province_dict[key]
+
+		elif(singleNode.nodeName == 'insuranceNumber'):
+			if(wartosc == '0'):
+				wartosc = '1'
+			else:
+				wartosc = '2'
+
+		elif singleNode.nodeName in ('identityVerificationdescription', 'employerVerificationdescription', 'identityCardVerificationdescription'):
+			if(wartosc == 'pozytywna'):
+				wartosc = '2'
+			else:
+				wartosc = '1'
+
+		return wartosc
 
 	def getAuctionData(self, id):
 		return minidom.parse(self.openURL('https://kokos.pl/webapi/get-auction-data?key=' + self.getKey() + '&id=' + str(id)))
