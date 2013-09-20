@@ -65,7 +65,26 @@ class WebAPI:
 		return [self.convertDictionaryToList(auction, records) for auction in auctions]
 		
 	def CalcRisk(lista_danych):
-		lista_wspol = {'time_period':'-0.0000407693375264417', 'value':'0.0000255781166535956', 'percent':'0.00809188866304392', 'insuranceNumber':'0.109439160613762', 'monthlyInstallment':'-0.0000927546299863634', 'age':'0.00128803387802354', 'province':'0.708329946304217', 'condition':'2.48032840681988', 'income':'', 'expenses':'', '':''}
+		lista_wspol = {
+		'time_period': -0.0000407693375264417,
+		'value': 0.0000255781166535956,
+		'percent':'0.00809188866304392',
+		'insuranceNumber':'0.109439160613762',
+		'monthlyInstallment':'-0.0000927546299863634',
+		'age':'0.00128803387802354',
+		'province':'0.708329946304217',
+		'condition':'2.48032840681988',
+		'income':'',
+		'expenses':'',
+		'credits':'',
+		'identityVerificationDescription':'',
+		'employerVerificationDescription':'',
+		'identityCardVerificationDescription':'',
+		'beforeDays':'',
+		'overdueDays':'',
+		'positiveRecomendations':'',
+		'negativeRecomendations':'',
+		'verify':''}
 
 
 	def convertDictionaryToList(self, dicAuction, records):
