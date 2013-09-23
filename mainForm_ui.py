@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainForm.ui'
 #
-# Created: Fri Sep 20 15:23:27 2013
+# Created: Mon Sep 23 13:38:47 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,11 +17,19 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1176, 605)
-        MainWindow.setAutoFillBackground(True)
+        MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
+        MainWindow.resize(1200, 600)
         MainWindow.setStyleSheet("QMainWindow {font-size : 400px; color : blue; background-image: url('plaza.jpg'); background-repeat:no-repeat;}")
-        #MainWindow.setStyleSheet(_fromUtf8("qlineargradient (spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 0, 0, 255), stop:0.339795 rgba(255, 0, 0, 255), stop:0.339799 rgba(255, 255, 255, 255), stop:0.662444 rgba(255, 255, 255, 255), stop:0.662469 rgba(0, 0, 255, 255), stop:1 rgba(0, 0, 255, 255))"))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setMaximumSize(QtCore.QSize(1200, 600))
+        MainWindow.setAutoFillBackground(False)
+        MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.Polish, QtCore.QLocale.Poland))
         self.centralwidget = QtGui.QWidget(MainWindow)
+        self.centralwidget.setMaximumSize(QtCore.QSize(1200, 600))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("TeXGyreCursor"))
         font.setPointSize(12)
@@ -184,7 +192,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addLayout(self.horizontalLayout, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1176, 19))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1200, 19))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuPlik = QtGui.QMenu(self.menubar)
         self.menuPlik.setObjectName(_fromUtf8("menuPlik"))
