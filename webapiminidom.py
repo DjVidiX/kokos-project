@@ -26,40 +26,40 @@ class WebAPI:
         return key
 
     def openURL(self, url):
-        print url
         return urllib.urlopen(url)
     
     def retrieveURL(self, url):
-        print url
         return urllib.urlretrieve(url)[0]
     
     def getValue(self, singleNode):
-        wartosc = str(singleNode.childNodes[0].toxml().encode('UTF-8')).replace('<![CDATA[', '').replace(']]', '').replace('>', '').replace('&oacute;', 'o')
+        if(singleNode.childNodes):
+            wartosc = str(singleNode.childNodes[0].toxml().encode('UTF-8')).replace('<![CDATA[', '').replace(']]', '').replace('>', '').replace('&oacute;', 'o')
 
-        if(str(singleNode.nodeName) == 'province' or str(singleNode.nodeName) == 'condition'):
-            province_dict={'zachodniopomorskie':'1', 'wielkopolskie':'2', 'lubelskie':'3', 'małopolskie':'4', 'dolnośląskie':'5', 'śląskie':'6', 'Śląskie':'6', 'łodzkie':'7', 'Łodzkie':'7', 'kujawsko-pomorskie':'8', 'podlaskie':'9', 'mazowieckie':'10', 'warmińsko-mazurskie':'11', 'pomorskie':'12', 'lubuskie':'13', 'podkarpackie':'14', 'opolskie':'15', 'świętokrzyskie':'16', 'Świętokrzyskie':'16', 'żonaty':'1', 'kawaler':'2', 'osoba rozwiedziona':'3', 'panna':'4', 'mężatka':'5', 'wdowa':'6', 'wdowiec':'7'}
-            for key in province_dict.keys():
-                if(wartosc.lower()==key):
-                    wartosc = province_dict[key]
+            if(str(singleNode.nodeName) == 'province' or str(singleNode.nodeName) == 'condition'):
+                province_dict={'zachodniopomorskie':'1', 'wielkopolskie':'2', 'lubelskie':'3', 'małopolskie':'4', 'dolnośląskie':'5', 'śląskie':'6', 'Śląskie':'6', 'łodzkie':'7', 'Łodzkie':'7', 'kujawsko-pomorskie':'8', 'podlaskie':'9', 'mazowieckie':'10', 'warmińsko-mazurskie':'11', 'pomorskie':'12', 'lubuskie':'13', 'podkarpackie':'14', 'opolskie':'15', 'świętokrzyskie':'16', 'Świętokrzyskie':'16', 'żonaty':'1', 'kawaler':'2', 'osoba rozwiedziona':'3', 'panna':'4', 'mężatka':'5', 'wdowa':'6', 'wdowiec':'7'}
+                for key in province_dict.keys():
+                    if(wartosc.lower()==key):
+                        wartosc = province_dict[key]
 
-        elif(str(singleNode.nodeName) == 'insuranceNumber'):
-            if(wartosc == '0'):
-                wartosc = '1'
-            else:
-                wartosc = '2'
+            elif(str(singleNode.nodeName) == 'insuranceNumber'):
+                if(wartosc == '0'):
+                    wartosc = '1'
+                else:
+                    wartosc = '2'
 
-        elif str(singleNode.nodeName) in ('identityVerificationDescription', 'employerVerificationDescription', 'identityCardVerificationDescription'):
-            if(wartosc == 'pozytywna'):
-                wartosc = '2'
-            else:
-                wartosc = '1'
+            elif str(singleNode.nodeName) in ('identityVerificationDescription', 'employerVerificationDescription', 'identityCardVerificationDescription'):
+                if(wartosc == 'pozytywna'):
+                    wartosc = '2'
+                else:
+                    wartosc = '1'
 
-        elif str(singleNode.nodeName) in ('createDate', 'startDate'):
-            lista_daty = wartosc.split()
-            data = lista_daty[0].split('-')
-            data = [int(d) for d in data]
-            print data
-            wartosc = date(data[0], data[1], data[2])
+            elif str(singleNode.nodeName) in ('createDate', 'startDate'):
+                lista_daty = wartosc.split()
+                data = lista_daty[0].split('-')
+                data = [int(d) for d in data]
+                wartosc = date(data[0], data[1], data[2])
+        else:
+            wartosc = 0
 
         return wartosc
 
@@ -75,9 +75,10 @@ class WebAPI:
         PB = ['startDate', 'age', 'province', 'condition', 'income', 'expenses', 'credits', 'employerVerificationDescription',
         'identityCardVerificationDescription', 'identityVerificationDescription', 'overdueDays', 'beforeDays', 'positiveRecomendations', 'negativeRecomendations']
         auctions = []
-        tempAuction = { 'verify' : 0 }
+        tempAuction = {}
         currentAuctions = self.getAuctionsByStatus(100)
         for auction in currentAuctions:
+            tempAuction['verify'] = 0
             for element in auction.childNodes:
                 if str(element.nodeName) in requiredData:
                     if (len(element.childNodes) == 1):
@@ -103,7 +104,6 @@ class WebAPI:
         return [self.convertDictionaryToList(auction, records) for auction in auctions]
 
     def calcRisk(self, auction):
-        print auction
         riskParameters = {
         'time_period': -0.0000407693375264417,
         'value': 0.0000255781166535956,
@@ -124,25 +124,25 @@ class WebAPI:
         'positiveRecomendations': -0.00128514408938851,
         'negativeRecomendations': -0.00109661386646035,
         'verify': -0.0360089281232056 }
-        risk = ((riskParameters['time_period'] * ((auction['createDate'] - auction['startDate']).total_seconds() / 60 / 60 / 24)) +
-        (riskParameters['value'] * auction['value']) +
-        (riskParameters['percent'] * (auction['percent'] * 12 / auction['period'])) +
-        (riskParameters['insuranceNumber'] * auction['insuranceNumber']) +
-        (riskParameters['monthlyInstallment'] * auction['monthlyInstallment']) +
-        (riskParameters['age'] * auction['age']) +
-        (riskParameters['province'] * 0.2313 * exp(0.0345 * auction['province'])) +
-        (riskParameters['condition'] * 0.2439 * exp(0.0554 * auction['condition'])) +
-        (riskParameters['income'] * auction['income']) +
-        (riskParameters['expenses'] * auction['expenses']) +
-        (riskParameters['credits'] * auction['credits']) +
-        (riskParameters['identityVerificationDescription'] * auction['identityVerificationDescription']) +
-        (riskParameters['employerVerificationDescription'] * auction['employerVerificationDescription']) +
-        (riskParameters['identityCardVerificationDescription'] * auction['identityCardVerificationDescription']) +
-        (riskParameters['beforeDays'] * auction['beforeDays']) +
-        (riskParameters['overdueDays'] * auction['overdueDays']) +
-        (riskParameters['positiveRecomendations'] * auction['positiveRecomendations']) +
-        (riskParameters['negativeRecomendations'] * auction['negativeRecomendations']) +
-        (riskParameters['verify'] * auction['verify']))
+        risk = ((riskParameters['time_period'] * float(((auction['createDate'] - auction['startDate']).total_seconds() / 60 / 60 / 24))) +
+        (riskParameters['value'] * float(auction['value'])) +
+        (riskParameters['percent'] * float((float(auction['percent']) * 12 / float(auction['period'])))) +
+        (riskParameters['insuranceNumber'] * float(auction['insuranceNumber'])) +
+        (riskParameters['monthlyInstallment'] * float(auction['monthlyInstallment'])) +
+        (riskParameters['age'] * float(auction['age'])) +
+        (riskParameters['province'] * 0.2313 * exp(0.0345 * float(auction['province']))) +
+        (riskParameters['condition'] * 0.2439 * exp(0.0554 * float(auction['condition']))) +
+        (riskParameters['income'] * float(auction['income'])) +
+        (riskParameters['expenses'] * float(auction['expenses'])) +
+        (riskParameters['credits'] * float(auction['credits'])) +
+        (riskParameters['identityVerificationDescription'] * float(auction['identityVerificationDescription'])) +
+        (riskParameters['employerVerificationDescription'] * float(auction['employerVerificationDescription'])) +
+        (riskParameters['identityCardVerificationDescription'] * float(auction['identityCardVerificationDescription'])) +
+        (riskParameters['beforeDays'] * float(auction['beforeDays'])) +
+        (riskParameters['overdueDays'] * float(auction['overdueDays'])) +
+        (riskParameters['positiveRecomendations'] * float(auction['positiveRecomendations'])) +
+        (riskParameters['negativeRecomendations'] * float(auction['negativeRecomendations'])) +
+        (riskParameters['verify'] * float(auction['verify'])))
         return risk
 
     def convertDictionaryToList(self, dicAuction, records):
@@ -173,13 +173,3 @@ class WebAPI:
         (percentFrom and 'percentFrom=' + str(percentFrom) + '&'  or '' ) +
         (percentTo and 'percentTo=' + str(percentTo) + '&'  or '' ) +
         (status and 'status=' + str(status) + '&' or '' ) + 'key=' + self.getKey()))
-
-'''
-def main():
-    webAPI = WebAPI()
-    webAPI.addKey('d9cb47b739ee220bc290938262ec602b')
-    print webAPI.search(status = 100).toprettyxml().encode('UTF-8')
-    
-if __name__ == '__main__':
-    main()
-'''
