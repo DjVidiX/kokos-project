@@ -98,7 +98,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Ile chcesz zainwestować?</string>
+            <string>Kwota inwestycji</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -126,6 +126,22 @@
         </layout>
        </item>
        <item>
+        <spacer name="horizontalSpacer_9">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QLabel" name="MonthNumberText">
@@ -139,7 +155,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Max. liczba miesięcy?</string>
+            <string>Liczba miesięcy</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -166,6 +182,22 @@
         </layout>
        </item>
        <item>
+        <spacer name="horizontalSpacer_8">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QLabel" name="GainText">
@@ -179,10 +211,10 @@
             </font>
            </property>
            <property name="text">
-            <string>Zysk</string>
+            <string> Min. Zysk</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -196,14 +228,33 @@
             </font>
            </property>
            <property name="minimum">
-            <number>1</number>
+            <number>10</number>
            </property>
            <property name="maximum">
-            <number>48</number>
+            <number>1000000</number>
+           </property>
+           <property name="singleStep">
+            <number>10</number>
            </property>
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -219,10 +270,10 @@
             </font>
            </property>
            <property name="text">
-            <string>Ryzyko</string>
+            <string>Max. Ryzyko</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -247,6 +298,22 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -278,9 +345,28 @@
              <italic>true</italic>
             </font>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_5">
