@@ -3,6 +3,7 @@
 import gzip
 import urllib
 import Queue
+from PyQt4 import QtCore
 from datetime import date
 from datetime import timedelta
 from math import exp
@@ -60,8 +61,11 @@ class WebAPI:
                 wartosc = date(data[0], data[1], data[2])
         else:
             wartosc = 0
-
-        return wartosc
+            
+        try:
+            return float(wartosc)
+        except TypeError:
+            return wartosc
 
     def getAuctionData(self, id):
         return minidom.parse(self.openURL('https://kokos.pl/webapi/get-auction-data?key=' + self.getKey() + '&id=' + str(id)))
@@ -90,7 +94,7 @@ class WebAPI:
                     elif (str(element.nodeName) == 'financialVerifies'):
                         tempAuction['verify'] = len(element.childNodes)
             tempAuction['risk'] = self.calcRisk(tempAuction)
-            tempAuction['url'] = ('https://kokos.pl/aukcje?id=' + self.getValue(auction.getElementsByTagName('id')[0]))
+            tempAuction['url'] = QtCore.QString('https://kokos.pl/aukcje?id=' + auction.getElementsByTagName('id')[0].childNodes[0].toprettyxml().encode('UTF-8'))
             auctions.append(tempAuction)
             tempAuction = {}
         return auctions
@@ -124,32 +128,32 @@ class WebAPI:
         'positiveRecomendations': -0.00128514408938851,
         'negativeRecomendations': -0.00109661386646035,
         'verify': -0.0360089281232056 }
-        risk = ((riskParameters['time_period'] * float(((auction['createDate'] - auction['startDate']).total_seconds() / 60 / 60 / 24))) +
-        (riskParameters['value'] * float(auction['value'])) +
-        (riskParameters['percent'] * float((float(auction['percent']) * 12 / float(auction['period'])))) +
-        (riskParameters['insuranceNumber'] * float(auction['insuranceNumber'])) +
-        (riskParameters['monthlyInstallment'] * float(auction['monthlyInstallment'])) +
-        (riskParameters['age'] * float(auction['age'])) +
-        (riskParameters['province'] * 0.2313 * exp(0.0345 * float(auction['province']))) +
-        (riskParameters['condition'] * 0.2439 * exp(0.0554 * float(auction['condition']))) +
-        (riskParameters['income'] * float(auction['income'])) +
-        (riskParameters['expenses'] * float(auction['expenses'])) +
-        (riskParameters['credits'] * float(auction['credits'])) +
-        (riskParameters['identityVerificationDescription'] * float(auction['identityVerificationDescription'])) +
-        (riskParameters['employerVerificationDescription'] * float(auction['employerVerificationDescription'])) +
-        (riskParameters['identityCardVerificationDescription'] * float(auction['identityCardVerificationDescription'])) +
-        (riskParameters['beforeDays'] * float(auction['beforeDays'])) +
-        (riskParameters['overdueDays'] * float(auction['overdueDays'])) +
-        (riskParameters['positiveRecomendations'] * float(auction['positiveRecomendations'])) +
-        (riskParameters['negativeRecomendations'] * float(auction['negativeRecomendations'])) +
-        (riskParameters['verify'] * float(auction['verify'])))
+        risk = ((riskParameters['time_period'] * ((auction['createDate'] - auction['startDate']).total_seconds() / 60 / 60 / 24)) +
+        (riskParameters['value'] * auction['value']) +
+        (riskParameters['percent'] * (auction['percent'] * 12 / auction['period'])) +
+        (riskParameters['insuranceNumber'] * auction['insuranceNumber']) +
+        (riskParameters['monthlyInstallment'] * auction['monthlyInstallment']) +
+        (riskParameters['age'] * auction['age']) +
+        (riskParameters['province'] * 0.2313 * exp(0.0345 * auction['province'])) +
+        (riskParameters['condition'] * 0.2439 * exp(0.0554 * auction['condition'])) +
+        (riskParameters['income'] * auction['income']) +
+        (riskParameters['expenses'] * auction['expenses']) +
+        (riskParameters['credits'] * auction['credits']) +
+        (riskParameters['identityVerificationDescription'] * auction['identityVerificationDescription']) +
+        (riskParameters['employerVerificationDescription'] * auction['employerVerificationDescription']) +
+        (riskParameters['identityCardVerificationDescription'] * auction['identityCardVerificationDescription']) +
+        (riskParameters['beforeDays'] * auction['beforeDays']) +
+        (riskParameters['overdueDays'] * auction['overdueDays']) +
+        (riskParameters['positiveRecomendations'] * auction['positiveRecomendations']) +
+        (riskParameters['negativeRecomendations'] * auction['negativeRecomendations']) +
+        (riskParameters['verify'] * auction['verify']))
         return risk
 
     def convertDictionaryToList(self, dicAuction, records):
         listAuction = []
         for record in records:
             if record in dicAuction:
-                listAuction.append(dicAuction[record])
+                listAuction.append(float(dicAuction[record]))
         listAuction.append(dicAuction['risk'])
         listAuction.append(dicAuction['url'])
         return listAuction
