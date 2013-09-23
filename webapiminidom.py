@@ -93,7 +93,7 @@ class WebAPI:
                                 tempAuction[str(personalData.nodeName)] = self.getValue(personalData)
                     elif (str(element.nodeName) == 'financialVerifies'):
                         tempAuction['verify'] = len(element.childNodes)
-            tempAuction['risk'] = (self.calcRisk(tempAuction) - 1) * 100
+            tempAuction['risk'] = round((self.calcRisk(tempAuction) - 1) * 100)
             tempAuction['url'] = QtCore.QString('https://kokos.pl/aukcje?id=' + auction.getElementsByTagName('id')[0].childNodes[0].toprettyxml().encode('UTF-8'))
             auctions.append(tempAuction)
             tempAuction = {}
@@ -104,7 +104,8 @@ class WebAPI:
         currentAuctions = self.getCurrentAuctionsWithRisk()
         for auction in currentAuctions:
             if (float(inputValues['value']) * auction['percent'] >= float(inputValues['income'])) and (auction['risk'] <= inputValues['risk']) and (int(auction['period']) <= inputValues['duration']):
-                 auctions.append(auction)
+                auction['totalIncome'] = (float(inputValues['value']) * auction['percent'])
+                auctions.append(auction)
         return [self.convertDictionaryToList(auction, records) for auction in auctions]
 
     def calcRisk(self, auction):
