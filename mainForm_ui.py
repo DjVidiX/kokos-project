@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainForm.ui'
 #
-# Created: Mon Sep 23 15:19:13 2013
+# Created: Mon Sep 23 15:36:03 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,7 +19,6 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
         MainWindow.resize(1200, 600)
-        MainWindow.setStyleSheet("QMainWindow {font-size : 400px; color : blue; background-image: url('plaza.jpg'); background-repeat:no-repeat;}")
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -27,6 +26,7 @@ class Ui_MainWindow(object):
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setMaximumSize(QtCore.QSize(1200, 600))
         MainWindow.setAutoFillBackground(False)
+        MainWindow.setStyleSheet(_fromUtf8("QMainWindow {font-size : 400px; color : blue; background-image: url(\'plaza.jpg\'); background-repeat:no-repeat;}"))
         MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.Polish, QtCore.QLocale.Poland))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setMaximumSize(QtCore.QSize(1200, 600))
@@ -203,39 +203,20 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.verticalLayout_5)
         self.gridLayout.addLayout(self.horizontalLayout, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1200, 19))
-        self.menubar.setObjectName(_fromUtf8("menubar"))
-        self.menuPlik = QtGui.QMenu(self.menubar)
-        self.menuPlik.setObjectName(_fromUtf8("menuPlik"))
-        self.menuHelp = QtGui.QMenu(self.menubar)
-        self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
-        MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
         self.actionAktualizuj_Baze_Danych = QtGui.QAction(MainWindow)
-        self.actionAktualizuj_Baze_Danych.setCheckable(True)
         self.actionAktualizuj_Baze_Danych.setObjectName(_fromUtf8("actionAktualizuj_Baze_Danych"))
         self.EndApp = QtGui.QAction(MainWindow)
-        self.EndApp.setCheckable(True)
         self.EndApp.setObjectName(_fromUtf8("EndApp"))
         self.AboutAutors = QtGui.QAction(MainWindow)
-        self.AboutAutors.setCheckable(True)
         self.AboutAutors.setObjectName(_fromUtf8("AboutAutors"))
         self.AboutApp = QtGui.QAction(MainWindow)
-        self.AboutApp.setCheckable(True)
         self.AboutApp.setObjectName(_fromUtf8("AboutApp"))
-        self.menuPlik.addAction(self.actionAktualizuj_Baze_Danych)
-        self.menuPlik.addSeparator()
-        self.menuPlik.addAction(self.EndApp)
-        self.menuHelp.addAction(self.AboutAutors)
-        self.menuHelp.addSeparator()
-        self.menuHelp.addAction(self.AboutApp)
-        self.menubar.addAction(self.menuPlik.menuAction())
-        self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
+        QtCore.QObject.connect(self.EndApp, QtCore.SIGNAL(_fromUtf8("activated()")), self.AboutApp.toggle)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -247,8 +228,6 @@ class Ui_MainWindow(object):
         self.RiskBox.setSuffix(QtGui.QApplication.translate("MainWindow", " %", None, QtGui.QApplication.UnicodeUTF8))
         self.KeyText.setText(QtGui.QApplication.translate("MainWindow", "Twój klucz WebAPI", None, QtGui.QApplication.UnicodeUTF8))
         self.SearchButton.setText(QtGui.QApplication.translate("MainWindow", "Szukaj", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuPlik.setTitle(QtGui.QApplication.translate("MainWindow", "Plik", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Pomoc", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAktualizuj_Baze_Danych.setText(QtGui.QApplication.translate("MainWindow", "Aktualizuj Baze Danych", None, QtGui.QApplication.UnicodeUTF8))
         self.EndApp.setText(QtGui.QApplication.translate("MainWindow", "Zakończ", None, QtGui.QApplication.UnicodeUTF8))
         self.AboutAutors.setText(QtGui.QApplication.translate("MainWindow", "O Autorach", None, QtGui.QApplication.UnicodeUTF8))

@@ -31,6 +31,9 @@
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {font-size : 400px; color : blue; background-image: url('plaza.jpg'); background-repeat:no-repeat;}</string>
+  </property>
   <property name="locale">
    <locale language="Polish" country="Poland"/>
   </property>
@@ -425,70 +428,47 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1200</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuPlik">
-    <property name="title">
-     <string>Plik</string>
-    </property>
-    <addaction name="actionAktualizuj_Baze_Danych"/>
-    <addaction name="separator"/>
-    <addaction name="EndApp"/>
-   </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Pomoc</string>
-    </property>
-    <addaction name="AboutAutors"/>
-    <addaction name="separator"/>
-    <addaction name="AboutApp"/>
-   </widget>
-   <addaction name="menuPlik"/>
-   <addaction name="menuHelp"/>
-  </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAktualizuj_Baze_Danych">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
     <string>Aktualizuj Baze Danych</string>
    </property>
   </action>
   <action name="EndApp">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
     <string>Zakończ</string>
    </property>
   </action>
   <action name="AboutAutors">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
     <string>O Autorach</string>
    </property>
   </action>
   <action name="AboutApp">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
     <string>O programie</string>
    </property>
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>EndApp</sender>
+   <signal>activated()</signal>
+   <receiver>AboutApp</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <slot>search()</slot>
  </slots>
