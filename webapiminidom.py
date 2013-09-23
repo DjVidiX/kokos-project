@@ -153,7 +153,7 @@ class WebAPI:
         listAuction = []
         for record in records:
             if record in dicAuction:
-                listAuction.append(float(dicAuction[record]))
+                listAuction.append(dicAuction[record])
         listAuction.append(dicAuction['risk'])
         listAuction.append(dicAuction['url'])
         return listAuction
