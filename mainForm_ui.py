@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainForm.ui'
 #
-# Created: Mon Sep 23 15:36:03 2013
+# Created: Mon Sep 23 15:46:56 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,9 +48,11 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.TableView = QtGui.QTableView(self.layoutWidget)
         self.TableView.setAutoFillBackground(True)
+        self.TableView.setStyleSheet(_fromUtf8("qlineargradient (spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255), stop:0.495 rgba(255, 255, 255, 255), stop:0.505 rgba(255, 0, 0, 255), stop:1 rgba(255, 0, 0, 255))"))
         self.TableView.setSortingEnabled(True)
         self.TableView.setObjectName(_fromUtf8("TableView"))
         self.TableView.horizontalHeader().setCascadingSectionResizes(True)
+        self.TableView.horizontalHeader().setDefaultSectionSize(130)
         self.TableView.horizontalHeader().setStretchLastSection(True)
         self.gridLayout.addWidget(self.TableView, 0, 0, 1, 1)
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -216,7 +218,6 @@ class Ui_MainWindow(object):
         self.AboutApp.setObjectName(_fromUtf8("AboutApp"))
 
         self.retranslateUi(MainWindow)
-        QtCore.QObject.connect(self.EndApp, QtCore.SIGNAL(_fromUtf8("activated()")), self.AboutApp.toggle)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
