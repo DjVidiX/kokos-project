@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainForm.ui'
 #
-# Created: Mon Sep 23 13:38:47 2013
+# Created: Mon Sep 23 15:09:36 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -20,7 +20,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
         MainWindow.resize(1200, 600)
         MainWindow.setStyleSheet("QMainWindow {font-size : 400px; color : blue; background-image: url('plaza.jpg'); background-repeat:no-repeat;}")
-        MainWindow.setWindowIcon(QtGui.QIcon('kokos.png'))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -146,8 +145,8 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         font.setItalic(True)
         self.RiskBox.setFont(font)
-        self.RiskBox.setMinimum(1)
-        self.RiskBox.setMaximum(48)
+        self.RiskBox.setMinimum(5)
+        self.RiskBox.setMaximum(100)
         self.RiskBox.setObjectName(_fromUtf8("RiskBox"))
         self.verticalLayout_4.addWidget(self.RiskBox)
         self.horizontalLayout.addLayout(self.verticalLayout_4)
@@ -204,19 +203,23 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
         self.actionAktualizuj_Baze_Danych = QtGui.QAction(MainWindow)
+        self.actionAktualizuj_Baze_Danych.setCheckable(True)
         self.actionAktualizuj_Baze_Danych.setObjectName(_fromUtf8("actionAktualizuj_Baze_Danych"))
-        self.actionZako_cz = QtGui.QAction(MainWindow)
-        self.actionZako_cz.setObjectName(_fromUtf8("actionZako_cz"))
-        self.actionO_Autorach = QtGui.QAction(MainWindow)
-        self.actionO_Autorach.setObjectName(_fromUtf8("actionO_Autorach"))
-        self.actionPomoc = QtGui.QAction(MainWindow)
-        self.actionPomoc.setObjectName(_fromUtf8("actionPomoc"))
+        self.EndApp = QtGui.QAction(MainWindow)
+        self.EndApp.setCheckable(True)
+        self.EndApp.setObjectName(_fromUtf8("EndApp"))
+        self.AboutAutors = QtGui.QAction(MainWindow)
+        self.AboutAutors.setCheckable(True)
+        self.AboutAutors.setObjectName(_fromUtf8("AboutAutors"))
+        self.AboutApp = QtGui.QAction(MainWindow)
+        self.AboutApp.setCheckable(True)
+        self.AboutApp.setObjectName(_fromUtf8("AboutApp"))
         self.menuPlik.addAction(self.actionAktualizuj_Baze_Danych)
         self.menuPlik.addSeparator()
-        self.menuPlik.addAction(self.actionZako_cz)
-        self.menuHelp.addAction(self.actionO_Autorach)
+        self.menuPlik.addAction(self.EndApp)
+        self.menuHelp.addAction(self.AboutAutors)
         self.menuHelp.addSeparator()
-        self.menuHelp.addAction(self.actionPomoc)
+        self.menuHelp.addAction(self.AboutApp)
         self.menubar.addAction(self.menuPlik.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
@@ -229,12 +232,13 @@ class Ui_MainWindow(object):
         self.MonthNumberText.setText(QtGui.QApplication.translate("MainWindow", "Max. liczba miesięcy?", None, QtGui.QApplication.UnicodeUTF8))
         self.GainText.setText(QtGui.QApplication.translate("MainWindow", "Zysk", None, QtGui.QApplication.UnicodeUTF8))
         self.RiskText.setText(QtGui.QApplication.translate("MainWindow", "Ryzyko", None, QtGui.QApplication.UnicodeUTF8))
+        self.RiskBox.setSuffix(QtGui.QApplication.translate("MainWindow", " %", None, QtGui.QApplication.UnicodeUTF8))
         self.KeyText.setText(QtGui.QApplication.translate("MainWindow", "Twój klucz WebAPI", None, QtGui.QApplication.UnicodeUTF8))
         self.SearchButton.setText(QtGui.QApplication.translate("MainWindow", "Szukaj", None, QtGui.QApplication.UnicodeUTF8))
         self.menuPlik.setTitle(QtGui.QApplication.translate("MainWindow", "Plik", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "Pomoc", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAktualizuj_Baze_Danych.setText(QtGui.QApplication.translate("MainWindow", "Aktualizuj Baze Danych", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionZako_cz.setText(QtGui.QApplication.translate("MainWindow", "Zakończ", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionO_Autorach.setText(QtGui.QApplication.translate("MainWindow", "O Autorach", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionPomoc.setText(QtGui.QApplication.translate("MainWindow", "O programie", None, QtGui.QApplication.UnicodeUTF8))
+        self.EndApp.setText(QtGui.QApplication.translate("MainWindow", "Zakończ", None, QtGui.QApplication.UnicodeUTF8))
+        self.AboutAutors.setText(QtGui.QApplication.translate("MainWindow", "O Autorach", None, QtGui.QApplication.UnicodeUTF8))
+        self.AboutApp.setText(QtGui.QApplication.translate("MainWindow", "O programie", None, QtGui.QApplication.UnicodeUTF8))
 
