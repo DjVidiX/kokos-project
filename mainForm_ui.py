@@ -20,6 +20,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
         MainWindow.resize(1200, 600)
         MainWindow.setStyleSheet("QMainWindow {font-size : 400px; color : blue; background-image: url('plaza.jpg'); background-repeat:no-repeat;}")
+        MainWindow.setWindowIcon(QtGui.QIcon('kokos.png'))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

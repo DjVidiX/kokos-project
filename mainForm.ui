@@ -235,11 +235,14 @@
              <italic>true</italic>
             </font>
            </property>
+           <property name="suffix">
+            <string> %</string>
+           </property>
            <property name="minimum">
-            <number>1</number>
+            <number>5</number>
            </property>
            <property name="maximum">
-            <number>48</number>
+            <number>100</number>
            </property>
           </widget>
          </item>
@@ -351,44 +354,54 @@
     </property>
     <addaction name="actionAktualizuj_Baze_Danych"/>
     <addaction name="separator"/>
-    <addaction name="actionZako_cz"/>
+    <addaction name="EndApp"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Pomoc</string>
     </property>
-    <addaction name="actionO_Autorach"/>
+    <addaction name="AboutAutors"/>
     <addaction name="separator"/>
-    <addaction name="actionPomoc"/>
+    <addaction name="AboutApp"/>
    </widget>
    <addaction name="menuPlik"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAktualizuj_Baze_Danych">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Aktualizuj Baze Danych</string>
    </property>
   </action>
-  <action name="actionZako_cz">
+  <action name="EndApp">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Zakończ</string>
    </property>
   </action>
-  <action name="actionO_Autorach">
+  <action name="AboutAutors">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>O Autorach</string>
    </property>
   </action>
-  <action name="actionPomoc">
+  <action name="AboutApp">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>O programie</string>
    </property>
   </action>
  </widget>
- <resources>
-  <include location="kokos.jpg"/>
- </resources>
+ <resources/>
  <connections/>
  <slots>
   <slot>search()</slot>
