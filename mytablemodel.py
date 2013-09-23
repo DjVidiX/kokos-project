@@ -6,7 +6,7 @@ from PyQt4.QtGui import *
 
 
 class MyTableModel(QAbstractTableModel):
-    header_labels = ['Wartosc', 'Oprocentowanie', 'URL']
+    header_labels = ['Wartosc', 'Oprocentowanie', 'Ryzyko', 'URL']
 
     def __init__(self, datain, parent=None, *args):
         QAbstractTableModel.__init__(self, parent, *args)
@@ -18,10 +18,16 @@ class MyTableModel(QAbstractTableModel):
         return QAbstractTableModel.headerData(self, section, orientation, role)
 
     def rowCount(self, parent):
-        return len(self.arraydata)
+        try:
+            return len(self.arraydata)
+        except IndexError:
+            return 0
 
     def columnCount(self, parent):
-        return len(self.arraydata[0])
+        try:
+            return len(self.arraydata[0])
+        except IndexError:
+            return 0
 
     def data(self, index, role):
         if not index.isValid():
