@@ -48,9 +48,11 @@ class MyForm(QMainWindow):
         ryzyko = self.ui.RiskBox.value()
         #MyWebAPI.addKey(str(klucz))
         my_array = self.MyWebAPI.getCurrentAuctions('id', 'value', 'percent', 'period', 'totalIncome', value=value, duration=month_dur, income=zysk, risk=ryzyko)
+        temp_auction = []
         """for aukcja in my_array:
-			solver.Auction(auckja)
-			"""
+            temp_auction.append(solver.Auction(auckja))
+        income_solution = solver.probabilityExpectedSolver(temp_auction, total, 10, 300, 100)
+        print income_solution"""
         if not my_array:
             QMessageBox.about(self, "Puste wyszukiwanie", u"Twoje zapytanie nie zwróciło żadnych wyników")
         tablemodel = MyTableModel(my_array, self)
