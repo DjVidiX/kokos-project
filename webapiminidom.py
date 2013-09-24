@@ -94,7 +94,7 @@ class WebAPI:
                     elif (str(element.nodeName) == 'financialVerifies'):
                         tempAuction['verify'] = len(element.childNodes)
             tempAuction['risk'] = round((self.calcRisk(tempAuction) - 1) * 100)
-            tempAuction['id'] = auction.getElementsByTagName('id')[0].childNodes[0].toprettyxml().encode('UTF-8'))
+            tempAuction['id'] = auction.getElementsByTagName('id')[0].childNodes[0].toprettyxml().encode('UTF-8')
             tempAuction['url'] = QtCore.QString('https://kokos.pl/aukcje?id=' + tempAuction['id'])
             auctions.append(tempAuction)
             tempAuction = {}
