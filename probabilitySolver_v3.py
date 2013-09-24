@@ -17,6 +17,7 @@ import os
 best_solution = []
 
 def saveAuctions(save_table, file_name):
+    showValues(save_table)
     my_file = open(file_name, "wb")
     for i in save_table:
         my_file.write(i.name+", ")
