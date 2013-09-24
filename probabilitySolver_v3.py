@@ -17,12 +17,13 @@ import os
 best_solution = []
 
 def saveAuctions(save_table, file_name):
-    my_file = open(file_name, "w")
+    my_file = open(file_name, "wb")
     for i in save_table:
         my_file.write(i.name+", ")
         my_file.write(str(i.risk)+", ")
         my_file.write(str(i.income)+", ")
         my_file.write(str(i.value)+"\n")
+    my_file.close()
 
 def loadAuctions(file_name):
     work_table = []
@@ -42,8 +43,8 @@ def ShowTime():
 class Auction:
     def __init__(self, args):
         self.name = args[0]
-        self.risk = float(args[1])
-        self.income = float(args[2])
+        self.risk = float(args[4])
+        self.income = float(args[5])
         self.incrisk = self.income / self.risk
         self.value = float(0)
         self.lose = self.risk-1
@@ -141,10 +142,10 @@ def probabilityExpectedSolver(auction_table, total, pieces, max_val, tries):
         clearValues(work_table)
 
 
-
+"""
 auction_table = []
 total =1000
-"""
+
 auction_table.append(Auction("aukcja1", 6, 1))
 auction_table.append(Auction("aukcja2", 1, 1))
 auction_table.append(Auction("aukcja3", 9.6, 1.02))
@@ -165,7 +166,7 @@ auction_table.append(Auction("aukcja17", 16, 1.095))
 auction_table.append(Auction("aukcja18", 16, 1.096))
 auction_table.append(Auction("aukcja19", 16, 1.1))
 auction_table.append(Auction("aukcja20", 10, 1.106))
-"""
+
 #showValues(auction_table)
 #showValues(generateInvestment(auction_table, 1000, 10, 300))
 #showValues(clearValues(auction_table))
@@ -180,5 +181,5 @@ ShowTime()
 showValues(loadAuctions("solution.txt"))
 
 ShowTime()
-
+"""
 
