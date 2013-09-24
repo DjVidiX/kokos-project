@@ -8,6 +8,7 @@ from PyQt4.QtGui import *
 from mainForm_ui import Ui_MainWindow
 from mytablemodel import MyTableModel
 from webapiminidom import WebAPI
+#import probabilitySolver_v2.py as solver
 
 class MyForm(QMainWindow):
     def __init__(self, parent=None):
@@ -46,7 +47,10 @@ class MyForm(QMainWindow):
         zysk = self.ui.GainBox.value()
         ryzyko = self.ui.RiskBox.value()
         #MyWebAPI.addKey(str(klucz))
-        my_array = self.MyWebAPI.getCurrentAuctions('value', 'percent', 'period', 'totalIncome', value=value, duration=month_dur, income=zysk, risk=ryzyko)
+        my_array = self.MyWebAPI.getCurrentAuctions('id', 'value', 'percent', 'period', 'totalIncome', value=value, duration=month_dur, income=zysk, risk=ryzyko)
+        """for aukcja in my_array:
+			solver.Auction(auckja)
+			"""
         if not my_array:
             QMessageBox.about(self, "Puste wyszukiwanie", u"Twoje zapytanie nie zwróciło żadnych wyników")
         tablemodel = MyTableModel(my_array, self)

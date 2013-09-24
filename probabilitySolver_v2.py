@@ -18,10 +18,13 @@ def ShowTime():
     print strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 class Auction:
-    def __init__(self, name, income, risk):
-        self.name = name
-        self.risk = float(risk)
-        self.income = float(income)
+    def __init__(self, *args):
+        self.name = args[0]
+        self.maxvalue = args[1]
+        self.risk = float(risk[4])
+        self.income = float(args[5])
+        #self.risk = float(risk)
+        #self.income = float(income)
         self.incrisk = income / risk
         self.value = float(0)
         self.lose = self.risk-1
