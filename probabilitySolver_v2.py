@@ -18,14 +18,14 @@ def ShowTime():
     print strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 class Auction:
-    def __init__(self, *args):
+    def __init__(self, args):
         self.name = args[0]
         self.maxvalue = args[1]
-        self.risk = float(risk[4])
+        self.risk = float(args[4]/100 + 1)
         self.income = float(args[5])
         #self.risk = float(risk)
         #self.income = float(income)
-        self.incrisk = income / risk
+        self.incrisk = self.income / self.risk
         self.value = float(0)
         self.lose = self.risk-1
         self.win = 1 - self.lose
@@ -77,6 +77,8 @@ def calculateExpected(work_table):
         exp_total = exp_total + i.expected
     return exp_total
 
+
+
 def probabilityRiskSolver(auction_table, total, pieces, max_val, tries):
     current_risk = 2
     for i in xrange(tries):
@@ -110,6 +112,7 @@ def probabilityIncomeSolver(auction_table, total, pieces, max_val, tries):
     return best_solution
 
 def probabilityExpectedSolver(auction_table, total, pieces, max_val, tries):
+    best_solution = []
     current_expected = -1000
     for i in xrange(tries):
         work_table = auction_table
@@ -122,11 +125,10 @@ def probabilityExpectedSolver(auction_table, total, pieces, max_val, tries):
                 print current_expected
         clearValues(work_table)
 
-    return best_solution
+    return best_solution+
 
 
-
-auction_table = []
+"""auction_table = []
 total =1000
 
 auction_table.append(Auction("aukcja1", 16, 1.1))
@@ -146,3 +148,4 @@ income_solution = probabilityExpectedSolver(auction_table, total, 10, 300, 100)
 ShowTime()
 
 
+"""

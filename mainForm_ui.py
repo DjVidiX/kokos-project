@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainForm.ui'
 #
-# Created: Mon Sep 23 15:46:56 2013
+# Created: Tue Sep 24 15:13:52 2013
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -103,6 +103,7 @@ class Ui_MainWindow(object):
         self.MonthNumberBox.setFont(font)
         self.MonthNumberBox.setMinimum(1)
         self.MonthNumberBox.setMaximum(48)
+        self.MonthNumberBox.setProperty("value", 12)
         self.MonthNumberBox.setObjectName(_fromUtf8("MonthNumberBox"))
         self.verticalLayout_2.addWidget(self.MonthNumberBox)
         self.horizontalLayout.addLayout(self.verticalLayout_2)
@@ -127,9 +128,10 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         font.setItalic(True)
         self.GainBox.setFont(font)
-        self.GainBox.setMinimum(10)
+        self.GainBox.setMinimum(1)
         self.GainBox.setMaximum(1000000)
         self.GainBox.setSingleStep(10)
+        self.GainBox.setProperty("value", 1)
         self.GainBox.setObjectName(_fromUtf8("GainBox"))
         self.verticalLayout_3.addWidget(self.GainBox)
         self.horizontalLayout.addLayout(self.verticalLayout_3)
