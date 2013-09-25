@@ -6,7 +6,7 @@ from PyQt4.QtGui import *
 
 
 class MyTableModel(QAbstractTableModel):
-    header_labels = ['ID', u'Wartość', 'Oprocentowanie [%]', u'Liczba miesięcy', 'Zysk z odsetek', 'Ryzyko [%]', 'URL']
+    header_labels = ['ID', u'Kwota Inwestycji', 'Oprocentowanie [%]', u'Liczba miesięcy', 'Zysk z odsetek', 'Ryzyko [%]', 'URL']
 
     def __init__(self, datain, parent=None, *args):
         QAbstractTableModel.__init__(self, parent, *args)

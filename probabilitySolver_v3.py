@@ -17,10 +17,10 @@ import os
 best_solution = []
 
 def saveAuctions(save_table, file_name):
-    showValues(save_table)
+    #showValues(save_table)
     my_file = open(file_name, "wb")
     for i in save_table:
-        my_file.write(i.name+", ")
+        my_file.write(i.name.replace("\n", "")+", ")
         my_file.write(str(i.risk)+", ")
         my_file.write(str(i.income)+", ")
         my_file.write(str(i.value)+"\n")
@@ -29,12 +29,16 @@ def saveAuctions(save_table, file_name):
 def loadAuctions(file_name):
     work_table = []
     my_file = open(file_name, "r")
-    my_string = my_file.read()
+    my_table = my_file.readlines()
+    for line in my_table:
+        dane = line.split(", ")
+        work_table.append(dane[3])
+    """my_string = my_file.read()
     my_table = my_string.split("\n")
-    for i in xrange(len(my_table)-1):
+    for i in xrange(len(my_table)-2):
         new_tab = my_table[i].split(", ")
         work_table.append(Auction([new_tab[0], float(new_tab[1]), float(new_tab[2])]))
-        work_table[i].value = float(new_tab[3])
+        work_table[i].value = float(new_tab[3]) """
     return work_table
 
 
@@ -44,9 +48,10 @@ def ShowTime():
 class Auction:
     def __init__(self, args):
         self.name = args[0]
-        self.risk = float(args[4])
-        self.income = float(args[5])
-        self.incrisk = self.income / self.risk
+        self.risk = float(args[5]/100+1)
+        #print str(self.risk) + 'asdasda'
+        self.income = float(args[4])
+        #self.incrisk = self.income / self.risk
         self.value = float(0)
         self.lose = self.risk-1
         self.win = 1 - self.lose
@@ -54,6 +59,11 @@ class Auction:
 
     def Recalculate(self):
         self.expected = (self.value)*(self.income*0.01)*self.win - self.value*self.lose
+        #print str((self.value)*(self.income)*self.win) + 'a' + str(self.value)  + 'b'+ str(self.income) + 'c' + str(self.win)
+        #print 'LOOOOOOOOOL'
+        #print self.value*self.lose
+        #print '==='
+        #print self.expected
 
     def ClearValue(self):
         self.value = float(0)
@@ -138,7 +148,6 @@ def probabilityExpectedSolver(auction_table, total, pieces, max_val, tries):
                 best_solution = []
                 best_solution.extend(work_table)
                 current_expected = calculated
-                print current_expected
                 saveAuctions(best_solution, "solution.txt")
         clearValues(work_table)
 
@@ -147,40 +156,40 @@ def probabilityExpectedSolver(auction_table, total, pieces, max_val, tries):
 auction_table = []
 total =1000
 
-auction_table.append(Auction("aukcja1", 6, 1))
-auction_table.append(Auction("aukcja2", 1, 1))
-auction_table.append(Auction("aukcja3", 9.6, 1.02))
-auction_table.append(Auction("aukcja4", 16, 1.03))
-auction_table.append(Auction("aukcja5", 16, 1.04))
-auction_table.append(Auction("aukcja6", 16, 1.05))
-auction_table.append(Auction("aukcja7", 16, 1.054))
-auction_table.append(Auction("aukcja8", 16, 1.056))
-auction_table.append(Auction("aukcja9", 10, 1.059))
-auction_table.append(Auction("aukcja10", 16, 1.06))
-auction_table.append(Auction("aukcja11", 16, 1.067))
-auction_table.append(Auction("aukcja12", 16, 1.075))
-auction_table.append(Auction("aukcja13", 16, 1.076))
-auction_table.append(Auction("aukcja14", 8, 1.087))
-auction_table.append(Auction("aukcja15", 16, 1.093))
-auction_table.append(Auction("aukcja16", 16, 1.093))
-auction_table.append(Auction("aukcja17", 16, 1.095))
-auction_table.append(Auction("aukcja18", 16, 1.096))
-auction_table.append(Auction("aukcja19", 16, 1.1))
-auction_table.append(Auction("aukcja20", 10, 1.106))
+auction_table.append(Auction(["aukcja1", 6, 1]))
+auction_table.append(Auction(["aukcja2", 1, 1]))
+auction_table.append(Auction(["aukcja3", 9.6, 1.02]))
+auction_table.append(Auction(["aukcja4", 16, 1.03]))
+auction_table.append(Auction(["aukcja5", 16, 1.04]))
+auction_table.append(Auction(["aukcja6", 16, 1.05]))
+auction_table.append(Auction(["aukcja7", 16, 1.054]))
+auction_table.append(Auction(["aukcja8", 16, 1.056]))
+auction_table.append(Auction(["aukcja9", 10, 1.059]))
+auction_table.append(Auction(["aukcja10", 16, 1.06]))
+auction_table.append(Auction(["aukcja11", 16, 1.067]))
+auction_table.append(Auction(["aukcja12", 16, 1.075]))
+auction_table.append(Auction(["aukcja13", 16, 1.076]))
+auction_table.append(Auction(["aukcja14", 8, 1.087]))
+auction_table.append(Auction(["aukcja15", 16, 1.093]))
+auction_table.append(Auction(["aukcja16", 16, 1.093]))
+auction_table.append(Auction(["aukcja17", 16, 1.095]))
+auction_table.append(Auction(["aukcja18", 16, 1.096]))
+auction_table.append(Auction(["aukcja19", 16, 1.1]))
+auction_table.append(Auction(["aukcja20", 10, 1.106]))
 
 #showValues(auction_table)
-#showValues(generateInvestment(auction_table, 1000, 10, 300))
-#showValues(clearValues(auction_table))
+#showValues(generateInvestment(auction_table, 1000, 10, 300]))
+#showValues(clearValues(auction_table]))
 
 ShowTime()
 
 #expected_risk = probabilityRiskSolver(auction_table, total, 20, 50, 10000)
 #expected_income = probabilityIncomeSolver(auction_table, total, 20, 300, 10000)
 
-#expected_solution = probabilityExpectedSolver(auction_table, total, 20, 200, 10000)
+expected_solution = probabilityExpectedSolver(auction_table, total, 20, 200, 10000)
 
 showValues(loadAuctions("solution.txt"))
 
-ShowTime()
-"""
+ShowTime() """
+
 

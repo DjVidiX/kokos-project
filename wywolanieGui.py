@@ -46,15 +46,22 @@ class MyForm(QMainWindow):
         month_dur = self.ui.MonthNumberBox.value()
         zysk = self.ui.GainBox.value()
         ryzyko = self.ui.RiskBox.value()
-        #MyWebAPI.addKey(str(klucz))
+        #MyWebAPI.addKey(str(klucz]))
         my_array = self.MyWebAPI.getCurrentAuctions('id', 'value', 'percent', 'period', 'totalIncome', value=value, duration=month_dur, income=zysk, risk=ryzyko)
         temp_auction = []
         for aukcja in my_array:
             temp_auction.append(solver.Auction(aukcja))
-        solver.probabilityExpectedSolver(temp_auction, 1000, 10, 300, 100)
+        #print temp_auction
+        solver.probabilityRiskSolver(temp_auction, value, value/5, 200, 100)
+        #solver.saveAuctions([solver.Auction([["aukcja20", 10, 1.106])], "solution.txt")
         income_solution = solver.loadAuctions('solution.txt')
-        for lol in income_solution:
-            print str(lol.name) + str(lol.value)
+        #print 'LOOL' + str(solver.calculateExpected(income_solution))
+        m_a = []
+        i = -1
+        print income_solution
+        for lol in my_array:
+            i = i+1
+            lol[1] = float(income_solution[i].replace("\n", ""))
         if not my_array:
             QMessageBox.about(self, "Puste wyszukiwanie", u"Twoje zapytanie nie zwróciło żadnych wyników")
         tablemodel = MyTableModel(my_array, self)
