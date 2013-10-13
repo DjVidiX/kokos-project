@@ -58,11 +58,11 @@ class MyForm(QMainWindow):
         #print 'LOOL' + str(solver.calculateExpected(income_solution))
         m_a = []
         i = -1
-        print income_solution
-        for lol in my_array:
+        for row in my_array:
             i = i+1
-            lol[1] = float(income_solution[i].replace("\n", ""))
-        if not my_array:
+            row[1] = float(income_solution[i].replace("\n", ""))
+            row[4] = float(row[1]*(row[2]/100)*row[3]) # kwota inwestycji * oprocentowanie w skali miesiecznej * liczba miesiecy
+	if not my_array:
             QMessageBox.about(self, "Puste wyszukiwanie", u"Twoje zapytanie nie zwróciło żadnych wyników")
         tablemodel = MyTableModel(my_array, self)
         self.ui.TableView.setModel(tablemodel)
