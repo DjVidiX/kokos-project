@@ -1,0 +1,16 @@
+wpisz poniższe polecenia aby uruchomić program:
+
+1. Linux
+
+cd Python
+source bin/activate
+cd ../
+python wywolanieGui.py
+
+2. Windows
+cd Python
+.\Python\bin\activate
+cd ..
+python wywolanieGui.py
+
+
