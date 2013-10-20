@@ -52,7 +52,7 @@ class MyForm(QMainWindow):
         for aukcja in my_array:
             temp_auction.append(solver.Auction(aukcja))
         #print temp_auction
-        solver.probabilityRiskSolver(temp_auction, value, value/5, 200, 100)
+        solver.probabilityRiskSolver(temp_auction, value/50, 10, 200, 100)
         #solver.saveAuctions([solver.Auction([["aukcja20", 10, 1.106])], "solution.txt")
         income_solution = solver.loadAuctions('solution.txt')
         #print 'LOOL' + str(solver.calculateExpected(income_solution))
@@ -61,7 +61,9 @@ class MyForm(QMainWindow):
         for row in my_array:
             i = i+1
             row[1] = float(income_solution[i].replace("\n", ""))
-            row[4] = float(row[1]*(row[2]/100)*row[3]) # kwota inwestycji * oprocentowanie w skali miesiecznej * liczba miesiecy
+            row[4] = float((row[1]*row[2]*row[3])/100) # kwota inwestycji * oprocentowanie w skali miesiecznej * liczba miesiecy
+            if row[4] < zysk:
+		my_array.remove(row)
 	if not my_array:
             QMessageBox.about(self, "Puste wyszukiwanie", u"Twoje zapytanie nie zwróciło żadnych wyników")
         tablemodel = MyTableModel(my_array, self)
