@@ -8,14 +8,13 @@ from PyQt4.QtGui import *
 from mainForm_ui import Ui_MainWindow
 from mytablemodel import MyTableModel
 from webapiminidom import WebAPI
-import probabilitySolver_v3 as solver
+import probabilitySolver as solver
 
 class MyForm(QMainWindow):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        #self.ui.styleSheet("QLabel {font-size : 400px; color : blue; background-image: url('tmp/test.jpg');}")
         self.MyWebAPI = WebAPI()
         self.klucz = self.keyCheck()
         if(self.klucz):
@@ -46,24 +45,21 @@ class MyForm(QMainWindow):
         month_dur = self.ui.MonthNumberBox.value()
         zysk = self.ui.GainBox.value()
         ryzyko = self.ui.RiskBox.value()
-        #MyWebAPI.addKey(str(klucz]))
         my_array = self.MyWebAPI.getCurrentAuctions('id', 'value', 'percent', 'period', 'totalIncome', value=value, duration=month_dur, risk=ryzyko)
         temp_auction = []
         for aukcja in my_array:
             temp_auction.append(solver.Auction(aukcja))
-        #print temp_auction
-        solver.probabilityRiskSolver(temp_auction, value/5, 10, 200, 100)
-        #solver.saveAuctions([solver.Auction([["aukcja20", 10, 1.106])], "solution.txt")
+        solver.probabilityRiskSolver(temp_auction, value, value/50, value, 10000)
         income_solution = solver.loadAuctions('solution.txt')
-        #print 'LOOL' + str(solver.calculateExpected(income_solution))
         m_a = []
         i = -1
         for row in my_array:
             i = i+1
             row[1] = float(income_solution[i].replace("\n", ""))
+            if row[1]== 0:
+		my_array.remove(row)
             row[4] = float((row[1]*row[2]*row[3])/100) # kwota inwestycji * oprocentowanie w skali miesiecznej * liczba miesiecy
-            #if row[4] < zysk:
-	#	my_array.remove(row)
+            row[2] = float(row[2]*12)
 	if not my_array:
             QMessageBox.about(self, "Puste wyszukiwanie", u"Twoje zapytanie nie zwróciło żadnych wyników")
         tablemodel = MyTableModel(my_array, self)
