@@ -1,7 +1,7 @@
 from distutils.core import setup
 import py2exe
 
-Mydata_files = [('.', ['plaza.png', 'kokos.png'])]
+Mydata_files = [('images', ['plaza.jpg', 'kokos.png']), ('images', ['.\\imageformats\\qjpeg4.dll'])]
 
 setup(
 	windows=[{"script":"wywolanieGui.py"}],
