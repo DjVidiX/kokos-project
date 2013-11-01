@@ -1,0 +1,22 @@
+#1
+Ca³y modu³ jest samodzielny, nie jest konieczne importowanie czegokolwiek z innych (np. solvera). 
+Zrobi³em tak, ¿eby mo¿na by³o przetestowaæ czêœæ zwi¹zan¹ z solverem niezale¿nie od reszty i móc wykryæ b³¹d, jeœli faktycznie pojawi³ sie on w tej czêœci programu. 
+
+#2
+Jedyna rzecz któr¹ trzeba wprowadziæ (domyœlnie wpisa³em x=20), to liczba aukcji, które ma stworzyæ na potrzeby symulacji. 
+Tworzone aukcje spe³niaj¹ parametry aukcji, którymi pos³uguje siê solver, czyli ka¿da z nich otrzymuje na wejœciu losowe parametry: nazwa, zysk, ryzyko i samodzielnie oblicza sobie ca³¹ resztê.
+Dane s¹ co prawda losowe, ale s¹ tak dobrane ich zakresy, ¿eby wygl¹da³y wiarygodnie.
+
+#3
+Po odpaleniu programu uruchomi siê funkcja SimylateEverything, która:
+1) stworzy listê losowo wygenerowanych aukcji
+2) wylosuje parametry takie jak kwota ³¹czna inwestycji i obliczy wielkoœæ "porcji" na których edzie potem operowaæ.
+3) uruchomi dla tego zestawu aukcji probabilityExpectedSolver
+4) poka¿e rezultat (listê aukcji z wartoœciami inwestycji w ka¿d¹ z nich)
+5) obliczy i wyœwietli ³¹czn¹ kwotê inwestycji w dan¹ aukcjê (bo to podobno na tym siê w³aœnie sypie)
+6) poka¿e expected, income i risk dla tego zestawu inwestycji
+7) powtórzy punkty 3, 4, 5, 6 tylko ¿e na probabilityIncomeSolver
+8) powtórzy punkty 3, 4, 5, 6 tylko ¿e na probabilityRiskSolver
+
+#4
+Oprócz tego, do testowania ka¿dego solvera jest osobna funkcja (SimulateExpected, SimulateIncome, SimulateRisk).
