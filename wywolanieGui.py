@@ -46,22 +46,22 @@ class MyForm(QMainWindow):
         zysk = self.ui.GainBox.value()
         ryzyko = self.ui.RiskBox.value()
         my_array = self.MyWebAPI.getCurrentAuctions('id', 'value', 'percent', 'period', 'totalIncome', value=value, duration=month_dur, risk=ryzyko)
-        temp_auction = []
-        for aukcja in my_array:
-            temp_auction.append(solver.Auction(aukcja))
-        solver.probabilityRiskSolver(temp_auction, value, value/50, value, 10000)
-        income_solution = solver.loadAuctions('solution.txt')
-        m_a = []
-        i = -1
+        final_array = []
         if not my_array:
             QMessageBox.about(self, "Puste wyszukiwanie", u"Twoje zapytanie nie zwróciło żadnych wyników")
         else:
+            temp_auction = []
+            for aukcja in my_array:
+                temp_auction.append(solver.Auction(aukcja))
+            solver.probabilityRiskSolver(temp_auction, value, value/50, value, 10000)
+            income_solution = solver.loadAuctions('solution.txt')
+            m_a = []
+            i = -1
             for row in my_array:
                 i = i+1
                 row[1] = income_solution[i]
                 if row[1] != 0:
                     row[4] = float((row[1]*row[2])/100) # kwota inwestycji * oprocentowanie aukcji
-            final_array = []
             for row in my_array:
                 if row[1] != 0:
                     row[2] = float(row[2] * 12 / row[3]) # wyznaczam oprocentowanie roczne do wyswietlenia
