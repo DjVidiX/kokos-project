@@ -53,16 +53,20 @@ class MyForm(QMainWindow):
         income_solution = solver.loadAuctions('solution.txt')
         m_a = []
         i = -1
-        for row in my_array:
-            i = i+1
-            row[1] = float(income_solution[i].replace("\n", ""))
-            if row[1]== 0:
-		my_array.remove(row)
-            row[4] = float((row[1]*row[2]*row[3])/100) # kwota inwestycji * oprocentowanie w skali miesiecznej * liczba miesiecy
-            row[2] = float(row[2]*12)
-	if not my_array:
+        if not my_array:
             QMessageBox.about(self, "Puste wyszukiwanie", u"Twoje zapytanie nie zwróciło żadnych wyników")
-        tablemodel = MyTableModel(my_array, self)
+        else:
+            for row in my_array:
+                i = i+1
+                row[1] = income_solution[i]
+                if row[1] != 0:
+                    row[4] = float((row[1]*row[2])/100) # kwota inwestycji * oprocentowanie aukcji
+            final_array = []
+            for row in my_array:
+                if row[1] != 0:
+                    row[2] = float(row[2] * 12 / row[3]) # wyznaczam oprocentowanie roczne do wyswietlenia
+                    final_array.append(row)
+        tablemodel = MyTableModel(final_array, self)
         self.ui.TableView.setModel(tablemodel)
         self.ui.TableView.setSortingEnabled(True)
         

@@ -32,7 +32,7 @@ def loadAuctions(file_name):
     my_table = my_file.readlines()
     for line in my_table:
         dane = line.split(", ")
-        work_table.append(dane[3])
+        work_table.append(float(dane[3].replace("\n", "")))
     """my_string = my_file.read()
     my_table = my_string.split("\n")
     for i in xrange(len(my_table)-2):

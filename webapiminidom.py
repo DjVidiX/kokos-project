@@ -157,10 +157,7 @@ class WebAPI:
         listAuction = []
         for record in records:
             if record in dicAuction:
-                if(record == 'percent'):
-                    listAuction.append(dicAuction[record] / dicAuction['period'])
-                else:
-                    listAuction.append(dicAuction[record])
+                listAuction.append(dicAuction[record])
         listAuction.append(dicAuction['risk'])
         listAuction.append(dicAuction['url'])
         return listAuction
