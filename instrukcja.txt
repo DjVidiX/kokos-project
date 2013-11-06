@@ -1,0 +1,13 @@
+﻿Windows:
+Do poprawnego uruchomienia programu za pomocą interpretera python niezbędne jest zainstalowanie interpretera Python 2.7 oraz biblioteki PyQt4. Pliki instalacyjne znajdują się w folderze "windows".
+Program można uruchomić z wiersza poleceń za pomocą polecenia:
+python wywolanieGui.py
+Alternatywnie można wypakować plik "kokos.7z", w którym znaduje się gotowa, działająca aplikacja w postaci pliku wykonywalnego .exe.
+
+Linux:
+Do poprawnego uruchomienia programu za pomocą interpretera python niezbędne jest zainstalowanie interpretera Python 2.7 oraz biblioteki PyQt4. Bibliotekę PyQt4 można zainstalować za pomocą polcenia:
+sudo apt-get install python-qt4
+natomiast interpreter Python 2.7 można zainstalować za pomocą polecenia:
+sudo apt-get install python2.7
+Program można uruchomić za pomocą polecenia:
+python wywolanieGui.py
